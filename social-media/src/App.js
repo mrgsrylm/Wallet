@@ -22,20 +22,22 @@ function App() {
   ** Layout For Home Page Social Media
   */
   const Layout = () => {
-    return(
+    return (
       <div>
         <NavBar />
-        <div style={{display: "flex"}}>
+        <div style={{ display: "flex" }}>
           <LeftBar />
-          <Outlet />
+          <div style={{ flex: 6 }}>
+            <Outlet />
+          </div>
           <RightBar />
         </div>
       </div>
     )
   }
 
-  const ProtectedRoute = ({children}) => {
-    if(!currentUser) {
+  const ProtectedRoute = ({ children }) => {
+    if (!currentUser) {
       return <Navigate to="/login" />
     }
     return children
@@ -51,7 +53,7 @@ function App() {
         <ProtectedRoute>
           <Layout />
         </ProtectedRoute>
-        ),
+      ),
       children: [
         {
           path: "/",
