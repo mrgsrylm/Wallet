@@ -16,7 +16,7 @@ import Profile from './pages/profile/Profile';
 
 function App() {
 
-  const currentUser = false;
+  const currentUser = true;
 
   /*
   ** Layout For Home Page Social Media
