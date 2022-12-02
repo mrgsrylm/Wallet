@@ -1,9 +1,13 @@
+import "./style.scss";
+import { useContext } from "react";
 import {
   createBrowserRouter,
   RouterProvider,
   Outlet,
   Navigate,
 } from "react-router-dom";
+import { DarkModeContext } from "./contex/darkModeContext";
+import { AuthContext } from "./contex/authContext";
 import NavBar from "./components/navBar/NavBar";
 import LeftBar from "./components/leftBar/LeftBar";
 import RightBar from "./components/rightBar/RightBar";
@@ -11,10 +15,6 @@ import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import Home from "./pages/home/Home";
 import Profile from "./pages/profile/Profile";
-import "./style.scss";
-import { DarkModeContext } from "./contex/darkModeContext";
-import { useContext } from "react";
-import { AuthContext } from "./contex/authContext";
 
 function App() {
   const { currentUser } = useContext(AuthContext);

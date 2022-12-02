@@ -1,5 +1,6 @@
-import React, { useContext } from 'react'
-import './leftBar.scss'
+import "./leftBar.scss";
+import React, { useContext } from "react";
+import { AuthContext } from "../../contex/authContext";
 import Friends from "../../assets/1.png";
 import Groups from "../../assets/2.png";
 import Market from "../../assets/3.png";
@@ -13,7 +14,6 @@ import Messages from "../../assets/10.png";
 import Tutorials from "../../assets/11.png";
 import Courses from "../../assets/12.png";
 import Fund from "../../assets/13.png";
-import { AuthContext } from '../../contex/authContext';
 
 const LeftBar = () => {
   const { currentUser } = useContext(AuthContext);
@@ -89,7 +89,7 @@ const LeftBar = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default LeftBar
+export default LeftBar;

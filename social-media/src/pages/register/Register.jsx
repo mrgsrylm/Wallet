@@ -1,6 +1,5 @@
-import { Link } from 'react-router-dom';
-
-import './register.scss';
+import "./register.scss";
+import { Link } from "react-router-dom";
 
 const Register = () => {
   return (
@@ -8,7 +7,11 @@ const Register = () => {
       <div className="card">
         <div className="left">
           <h1>Social Media</h1>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio, rerum quidem distinctio inventore ad magnam nemo beatae! Ad, eos delectus.</p>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio,
+            rerum quidem distinctio inventore ad magnam nemo beatae! Ad, eos
+            delectus.
+          </p>
           <span>Do you have an account?</span>
           <Link to="/login">
             <button>Login</button>
@@ -26,7 +29,7 @@ const Register = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Register
+export default Register;

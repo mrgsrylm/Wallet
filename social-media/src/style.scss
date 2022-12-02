@@ -7,6 +7,7 @@ $theme: (
     textColorSoft: #555,
     border: lightgray,
   ),
+  
   dark: (
     textColor: whitesmoke,
     bg: #222,
@@ -41,4 +42,16 @@ $theme: (
 
 @function themed($key) {
   @return map-get($theme-map, $key);
+}
+
+@mixin mobile {
+  @media (max-width: 480px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: 960px) {
+    @content;
+  }
 }
