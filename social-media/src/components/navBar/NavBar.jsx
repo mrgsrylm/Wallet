@@ -1,15 +1,22 @@
+import "./navBar.scss";
 import React from 'react'
+import { useContext } from "react";
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../contex/authContext';
+import { DarkModeContext } from "../../contex/darkModeContext";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
+import WbSunnyOutlinedIcon from "@mui/icons-material/WbSunnyOutlined";
 import GridViewOutlinedIcon from "@mui/icons-material/GridViewOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
-import "./navBar.scss";
 
 const NavBar = () => {
+  const { toggle, darkMode } = useContext(DarkModeContext)
+  const { currentUser } = useContext(AuthContext)
+
   return (
     <div className='navbar'>
       <div className="left">
@@ -17,7 +24,11 @@ const NavBar = () => {
           <span>SocialMedia</span>
         </Link>
         <HomeOutlinedIcon />
-        <DarkModeOutlinedIcon />
+        {darkMode ? (
+          <WbSunnyOutlinedIcon onClick={toggle} />
+        ) : (
+          <DarkModeOutlinedIcon onClick={toggle} />
+        )}
         <GridViewOutlinedIcon />
         <div className="search">
           <SearchOutlinedIcon />
@@ -29,8 +40,8 @@ const NavBar = () => {
         <EmailOutlinedIcon />
         <NotificationsOutlinedIcon />
         <div className="user">
-          <img src="" alt="" />
-          <span>Jhon Doe</span>
+          <img src={currentUser.profilePic} alt="" />
+          <span>{currentUser.name}</span>
         </div>
       </div>
     </div>
