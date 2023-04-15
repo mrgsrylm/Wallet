@@ -1,0 +1,24 @@
+version: '2.17'
+
+services:
+  database:
+    image: mysql:8.0
+    container_name: pollspolling-db
+    restart: always
+    environment:
+      - MYSQL_DATABASE=pollsdb
+      - MYSQL_ROOT_PASSWORD=my-secret-pw
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+    ports:
+      - '3306:3306'
+    volumes:
+      - pollspolling-db:/var/lib/mysql
+
+volumes:
+  pollspolling-db:
+    driver: local
+
+networks:
+  pollspolling-db:
+    driver: bridge
