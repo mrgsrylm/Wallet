@@ -1,6 +1,11 @@
 package com.poywallet.poywalletbackend.common;
 
 public class Constants {
+    public static final String BASE_URL_FE = "http://localhost:3000/";
+
+    public static final String DATE_FORMAT = "dd.MM.yyyy";
+    public static final String DATE_TIME_FORMAT = "dd.MM.yyyy HH:mm:ss";
+
     public static final String SUCCESS = "Success";
 
     public static final String UNAUTHORIZED = "Unauthorized";
