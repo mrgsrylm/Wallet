@@ -1,0 +1,33 @@
+version: '2.7'
+
+services:
+  db:
+    container_name: poy-wallet-db
+    image: postgres:15.2
+    restart: always
+    env_file: ./.env
+    environment:
+      POSTGRES_DB: ${POSTGRES_NAME}
+      POSTGRES_USER: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - '5432:5432'
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - pw-bridge
+    expose:
+      - 5432
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '100m'
+        max-file: '5'
+
+volumes:
+  db-data:
+    driver: local
+
+networks:
+  pw-bridge:
+    driver: bridge
