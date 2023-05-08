@@ -1,17 +1,14 @@
-import logo from './logo.svg';
-import './App.css';
+import { Route, Routes } from 'react-router-dom';
+import SignIn from './pages/auth/SignIn';
+import SignUp from './pages/auth/SignUp';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          UNDER CONSTRUCTION
-        </p>
-          Poy Wallet
-      </header>
-    </div>
+    <Routes>
+      <Route path="/" element={<SignIn />} />
+      <Route path="/login" element={<SignIn />} />
+      <Route path="/signup" element={<SignUp />} />
+    </Routes>
   );
 }
 

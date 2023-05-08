@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { SnackbarProvider } from 'notistack';
 import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter } from 'react-router-dom';
-import './index.css';
 import App from './App';
 import ThemeProvider from './theme';
 import * as serviceWorker from './serviceWorker';
@@ -13,7 +13,9 @@ root.render(
   <HelmetProvider>
     <BrowserRouter>
       <ThemeProvider>
-        <App />
+        <SnackbarProvider preventDuplicate>
+          <App />
+        </SnackbarProvider>
       </ThemeProvider>
     </BrowserRouter>
   </HelmetProvider>
