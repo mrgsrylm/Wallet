@@ -1,8 +1,8 @@
 ##### DEV
-run-backend:
-	cd poy-wallet-backend && ./mvnw clean spring-boot:run --spring.profile.active=dev
+run-backend-dev:
+	cd poy-wallet-backend && ./mvnw clean spring-boot:run -Dspring.profiles.active=dev
 
-run-frontend:
+run-frontend-dev:
 	cd poy-wallet-frontend && npm run start
 
 ##### MIGRATION
