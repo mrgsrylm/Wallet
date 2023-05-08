@@ -1,5 +1,6 @@
 package com.poywallet.poywalletbackend.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -10,12 +11,22 @@ import java.util.List;
  */
 @Getter
 @Builder
-public class JwtResponse {
-    private String type;
-    private String token;
+public class SignInResponse {
+    @JsonProperty("id")
     private Long id;
-    private String username;
+
+    @JsonProperty("first_name")
     private String firstName;
+
+    @JsonProperty("last_name")
     private String lastName;
+
+    @JsonProperty("username")
+    private String username;
+
+    @JsonProperty("roles")
     private List<String> roles;
+
+    @JsonProperty("token")
+    private String token;
 }

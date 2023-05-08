@@ -16,7 +16,7 @@ spring:
     livereload:
       enabled: false # we use Grunt + BrowserSync for livereload
   datasource:
-    url: jdbc:postgresql://localhost:5432/${POSTGRES_NAME}
+    url: jdbc:postgresql://localhost:5432/poy_wallet_dev
     username: ${POSTGRES_USERNAME}
     password: ${POSTGRES_PASSWORD}
   jpa:
@@ -38,3 +38,10 @@ spring:
 logging:
   level:
     org.springframework.security: debug
+
+app:
+  security:
+    jwt:
+      secret-key: ${JWT_SECRET}
+      expiration: 86400000 # a day
+      refresh-expiration: 604800000 # 7 days
