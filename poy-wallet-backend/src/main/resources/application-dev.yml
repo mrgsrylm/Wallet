@@ -45,3 +45,5 @@ app:
       secret-key: ${SECRET_KEY}
       expiration: 86400000 # a day
       refresh-expiration: 604800000 # 7 days
+  cors:
+    allowed-origins: http://localhost:3000

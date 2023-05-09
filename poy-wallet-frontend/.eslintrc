@@ -25,6 +25,7 @@
     }
   },
   "rules": {
+    "camelcase": "off",
     "no-new": 0,
     "no-alert": 0,
     "no-shadow": 0,
@@ -75,7 +76,8 @@
         "object": true,
         "array": false
       }
-    ]
+    ],
+    "dot-notation": [2, {"allowPattern": "^[a-z]+(_[a-z]+)+$"}]
   }
 }
   

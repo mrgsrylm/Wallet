@@ -3,7 +3,7 @@ package com.poywallet.poywalletbackend.config;
 import com.poywallet.poywalletbackend.security.UserDetailsServiceImpl;
 import com.poywallet.poywalletbackend.security.jwt.AuthEntryPointJwt;
 import com.poywallet.poywalletbackend.security.jwt.AuthTokenFilter;
-import com.poywallet.poywalletbackend.security.jwt.JwtUtils;
+import com.poywallet.poywalletbackend.security.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,7 +31,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final JwtUtils jwtUtils;
+    private final JwtProvider jwtProvider;
     private final AuthEntryPointJwt authEntryPointJwt;
     private final UserDetailsServiceImpl userDetailsService;
 
@@ -45,7 +45,7 @@ public class SecurityConfig {
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
-        return new AuthTokenFilter(jwtUtils, userDetailsService);
+        return new AuthTokenFilter(jwtProvider, userDetailsService);
     }
 
     @Bean

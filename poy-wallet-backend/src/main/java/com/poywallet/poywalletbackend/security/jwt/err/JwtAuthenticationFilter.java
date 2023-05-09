@@ -1,6 +1,6 @@
 package com.poywallet.poywalletbackend.security.jwt.err;
 
-import com.poywallet.poywalletbackend.domain.auth.JwtRefreshRepository;
+import com.poywallet.poywalletbackend.repository.JwtRefreshRepository;
 import com.poywallet.poywalletbackend.security.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

@@ -1,7 +1,7 @@
 package com.poywallet.poywalletbackend.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.poywallet.poywalletbackend.domain.user.User;
+import com.poywallet.poywalletbackend.model.User;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

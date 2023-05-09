@@ -1,7 +1,7 @@
 package com.poywallet.poywalletbackend.security;
 
-import com.poywallet.poywalletbackend.domain.user.User;
-import com.poywallet.poywalletbackend.domain.user.UserRepository;
+import com.poywallet.poywalletbackend.model.User;
+import com.poywallet.poywalletbackend.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -25,11 +25,11 @@ import static com.poywallet.poywalletbackend.common.Constants.CANNOT_SET_AUTH;
  */
 @Slf4j(topic = "AuthTokenFilter")
 public class AuthTokenFilter extends OncePerRequestFilter {
-    private final JwtUtils jwtUtils;
+    private final JwtProvider jwtProvider;
     private final UserDetailsServiceImpl userDetailsService;
 
-    public AuthTokenFilter(JwtUtils jwtUtils, UserDetailsServiceImpl userDetailsService) {
-        this.jwtUtils = jwtUtils;
+    public AuthTokenFilter(JwtProvider jwtProvider, UserDetailsServiceImpl userDetailsService) {
+        this.jwtProvider = jwtProvider;
         this.userDetailsService = userDetailsService;
     }
 
@@ -42,8 +42,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         try {
             String jwt = parseJwt(request);
 //            String userEmail = jwtProvider.extractUsername();
-            if (jwt != null && jwtUtils.validateJwt(jwt)) {
-                final String username = jwtUtils.getUsernameFromJwt(jwt);
+            if (jwt != null && jwtProvider.validateJwt(jwt)) {
+                final String username = jwtProvider.getUsernameFromJwt(jwt);
                 final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                 final UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(

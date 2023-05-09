@@ -71,7 +71,9 @@ CREATE TABLE jwt_refresh
 (
     id          BIGINT              NOT NULL,
     token       VARCHAR(255)        NOT NULL,
-    created_at  TIMESTAMP WITHOUT   TIME ZONE NOT NULL
+    created_at  TIMESTAMP WITHOUT   TIME ZONE NOT NULL,
+    user_id     BIGINT              NOT NULL,
+    CONSTRAINT pk_jwt_refresh PRIMARY KEY (id)
 );
 
 ALTER TABLE role
@@ -113,3 +115,6 @@ ALTER TABLE public.user_role
 
 ALTER TABLE public.user_role
     ADD CONSTRAINT fk_user_role_on_user FOREIGN KEY (user_id) REFERENCES public."user" (id);
+
+ALTER TABLE jwt_refresh
+    ADD CONSTRAINT fk_jwt_refresh_on_user FOREIGN KEY (user_id) REFERENCES public."user" (id);
