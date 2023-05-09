@@ -1,11 +1,11 @@
 package com.poywallet.poywalletbackend.controller;
 
-import com.poywallet.poywalletbackend.dto.request.SignInRequest;
-import com.poywallet.poywalletbackend.dto.request.SignUpRequest;
-import com.poywallet.poywalletbackend.dto.response.CommandResponse;
-import com.poywallet.poywalletbackend.dto.response.SignInResponse;
-import com.poywallet.poywalletbackend.dto.response.RestApiResponse;
-import com.poywallet.poywalletbackend.service.AuthService;
+import com.poywallet.poywalletbackend.domain.auth.SignInRequest;
+import com.poywallet.poywalletbackend.domain.auth.SignUpRequest;
+import com.poywallet.poywalletbackend.domain.auth.CommandResponse;
+import com.poywallet.poywalletbackend.domain.auth.AuthResponse;
+import com.poywallet.poywalletbackend.web.RestApiResponse;
+import com.poywallet.poywalletbackend.domain.auth.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,7 +17,7 @@ import java.time.Instant;
 
 import static com.poywallet.poywalletbackend.common.Constants.*;
 
-@CrossOrigin(origins = BASE_URL_FE)
+@CrossOrigin(origins = CLIENT_BASE_URL)
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
@@ -46,8 +46,8 @@ public class AuthController {
      * @return JwtResponse
      */
     @PostMapping("/sign-in")
-    public ResponseEntity<RestApiResponse<SignInResponse>> login(@Valid @RequestBody SignInRequest request) {
-        final SignInResponse response = authService.signIn(request);
+    public ResponseEntity<RestApiResponse<AuthResponse>> login(@Valid @RequestBody SignInRequest request) {
+        final AuthResponse response = authService.signIn(request);
         return ResponseEntity.ok(new RestApiResponse<>(Instant.now(clock).toEpochMilli(), SUCCESS, response));
     }
 }

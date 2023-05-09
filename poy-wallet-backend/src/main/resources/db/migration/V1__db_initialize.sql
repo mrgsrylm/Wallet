@@ -8,7 +8,7 @@ CREATE SEQUENCE IF NOT EXISTS sequence_wallet START WITH 1 INCREMENT BY 5;
 
 CREATE SEQUENCE IF NOT EXISTS public.sequence_user START WITH 1 INCREMENT BY 5;
 
-CREATE SEQUENCE IF NOT EXISTS sequence_token START WITH 1 INCREMENT BY 5;
+CREATE SEQUENCE IF NOT EXISTS sequence_jwt_refresh START WITH 1 INCREMENT BY 5;
 
 CREATE TABLE role
 (
@@ -67,15 +67,11 @@ CREATE TABLE public.user_role
     CONSTRAINT pk_user_role PRIMARY KEY (role_id, user_id)
 );
 
-CREATE TABLE token
+CREATE TABLE jwt_refresh
 (
-    id          BIGINT          NOT NULL,
-    token       VARCHAR(255)    NOT NULL,
-    token_type  VARCHAR(50)     NOT NULL,
-    revoked     BOOLEAN,
-    expired     BOOLEAN,
-    user_id     BIGINT          NOT NULL,
-    CONSTRAINT pk_token PRIMARY KEY (id)
+    id          BIGINT              NOT NULL,
+    token       VARCHAR(255)        NOT NULL,
+    created_at  TIMESTAMP WITHOUT   TIME ZONE NOT NULL
 );
 
 ALTER TABLE role
@@ -117,6 +113,3 @@ ALTER TABLE public.user_role
 
 ALTER TABLE public.user_role
     ADD CONSTRAINT fk_user_role_on_user FOREIGN KEY (user_id) REFERENCES public."user" (id);
-
-ALTER TABLE token
-    ADD CONSTRAINT FK_TOKEN_ON_USER FOREIGN KEY (user_id) REFERENCES public."user" (id);

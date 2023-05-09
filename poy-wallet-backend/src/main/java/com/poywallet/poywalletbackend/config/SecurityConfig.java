@@ -1,12 +1,12 @@
 package com.poywallet.poywalletbackend.config;
 
 import com.poywallet.poywalletbackend.security.UserDetailsServiceImpl;
-import com.poywallet.poywalletbackend.security.jwt.JwtAuthEntryPoint;
-import com.poywallet.poywalletbackend.security.jwt.JwtAuthTokenFilter;
+import com.poywallet.poywalletbackend.security.jwt.AuthEntryPointJwt;
+import com.poywallet.poywalletbackend.security.jwt.AuthTokenFilter;
+import com.poywallet.poywalletbackend.security.jwt.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -22,26 +22,30 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 /**
  * Configuration file used to configure security settings of the application
  */
+
+/**
+ * Configuration file used to configure security settings of the application
+ */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final JwtAuthEntryPoint jwtAuthEntryPoint;
+    private final JwtUtils jwtUtils;
+    private final AuthEntryPointJwt authEntryPointJwt;
     private final UserDetailsServiceImpl userDetailsService;
 
     private static final String[] AUTH_WHITELIST = {
             "/api/v1/auth/**",
+            "/v3/api-docs/**",
+            "/v3/api-docs.yaml",
+            "/swagger-ui/**",
+            "/swagger-ui.html"
     };
 
     @Bean
-    public JwtAuthTokenFilter authenticationJwtTokenFilter() {
-        return new JwtAuthTokenFilter();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public AuthTokenFilter authenticationJwtTokenFilter() {
+        return new AuthTokenFilter(jwtUtils, userDetailsService);
     }
 
     @Bean
@@ -58,17 +62,23 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity security) throws Exception {
-        security.cors().and()
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity
+                .cors().and()
                 .csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(jwtAuthEntryPoint).and()
+                .exceptionHandling().authenticationEntryPoint(authEntryPointJwt).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeHttpRequests()
                 .requestMatchers(AUTH_WHITELIST).permitAll()
                 .anyRequest().authenticated();
 
-        security.authenticationProvider(authenticationProvider());
-        security.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-        return security.build();
+        httpSecurity.authenticationProvider(authenticationProvider());
+        httpSecurity.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        return httpSecurity.build();
     }
 }

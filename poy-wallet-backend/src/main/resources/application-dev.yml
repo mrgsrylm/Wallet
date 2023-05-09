@@ -42,6 +42,6 @@ logging:
 app:
   security:
     jwt:
-      secret-key: ${JWT_SECRET}
+      secret-key: ${SECRET_KEY}
       expiration: 86400000 # a day
       refresh-expiration: 604800000 # 7 days
