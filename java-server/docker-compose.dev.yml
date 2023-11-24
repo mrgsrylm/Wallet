@@ -1,0 +1,20 @@
+version: '3.1'
+
+services:
+  database:
+    container_name: database-dev
+    image: postgres:15.3
+    restart: always
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${PG_DB}
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+    ports:
+      - "${PG_PORT}:${PG_PORT}"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
