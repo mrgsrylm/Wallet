@@ -3,6 +3,7 @@ package io.github.mrgsrylm.wallet.dto.auth;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,9 +14,8 @@ import java.util.Set;
  */
 @Data
 @Builder
+@AllArgsConstructor
 public class SignUpRequest {
-    private Long id;
-
     @Size(min = 3, max = 50, message = "{firstName.size}")
     @NotBlank(message = "{firstName.notblank}")
     private String firstName;

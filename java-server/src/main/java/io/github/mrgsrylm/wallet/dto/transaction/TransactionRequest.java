@@ -4,6 +4,7 @@ import io.github.mrgsrylm.wallet.model.enums.TransactionStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -14,6 +15,7 @@ import java.util.UUID;
  * Data Transfer Object for Transaction request
  */
 @Data
+@Builder
 public class TransactionRequest {
 
     private Long id;

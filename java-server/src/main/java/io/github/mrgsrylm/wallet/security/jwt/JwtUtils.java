@@ -30,21 +30,31 @@ public class JwtUtils {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String generateJwtToken(Authentication authentication) {
-        final UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
-
-        Map<String, Object> claims = userPrincipal.getClaims();
+    public String createToken(Map<String, Object> claims, String subject) {
         Date now = new Date();
         Date expirationDate = new Date(now.getTime() + jwtExpirationMs);
 
         return Jwts.builder()
-                .setSubject((userPrincipal.getUsername()))
-                .setClaims(claims)
+//                .setClaims(claims) // issue when integration test
+                .setSubject(subject)
                 .setIssuedAt(now)
                 .setExpiration(expirationDate)
                 .signWith(signedInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
+
+    public String generateJwtToken(Authentication authentication) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Map<String, Object> claims = userDetails.getClaims();
+        return createToken(claims, userDetails.getUsername());
+    }
+
+    public String generateJwtToken(UserDetailsImpl customUserDetails) {
+        Map<String, Object> claims = customUserDetails.getClaims();
+        claims.put(TokenClaims.ID.getValue(), customUserDetails.getId());
+        return createToken(claims, customUserDetails.getUsername());
+    }
+
 
     public Claims extractClaims(String token) {
         return Jwts.parserBuilder()

@@ -51,10 +51,17 @@ public class RandomUtil {
      * @return a random BigDecimal within the specified range
      */
     public static BigDecimal generateRandomBigDecimal(double min, double max) {
-
         final int scale = 2;
         double randomDouble = min + (max - min) * random.nextDouble();
         return new BigDecimal(randomDouble, new java.math.MathContext(scale));
+    }
+
+    public static Long generateRandomLong(long min, long max) {
+        if (min > max) {
+            throw new IllegalArgumentException("Min value must be less than or equal to max value");
+        }
+
+        return min + (long) (random.nextDouble() * (max - min + 1));
     }
 }
 

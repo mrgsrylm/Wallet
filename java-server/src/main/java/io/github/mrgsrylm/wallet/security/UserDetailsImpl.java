@@ -22,18 +22,15 @@ public class UserDetailsImpl implements UserDetails {
 
     private final User user;
 
-    private Collection<? extends GrantedAuthority> authorities;
-
     public static UserDetailsImpl build(User user) {
-        final List<SimpleGrantedAuthority> authorities = user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getType().name()))
-                .toList();
-
-        return new UserDetailsImpl(user, authorities);
+        return new UserDetailsImpl(user);
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<SimpleGrantedAuthority> authorities = user.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority(role.getType().name()))
+                .toList();
         return authorities;
     }
 

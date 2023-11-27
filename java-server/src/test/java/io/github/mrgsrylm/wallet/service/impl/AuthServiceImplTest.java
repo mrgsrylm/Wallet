@@ -7,13 +7,9 @@ import io.github.mrgsrylm.wallet.dto.auth.LoginRequest;
 import io.github.mrgsrylm.wallet.dto.auth.SignUpRequest;
 import io.github.mrgsrylm.wallet.dto.auth.SignUpRequestMapper;
 import io.github.mrgsrylm.wallet.exception.ElementAlreadyExistsException;
-import io.github.mrgsrylm.wallet.exception.NoSuchElementFoundException;
-import io.github.mrgsrylm.wallet.fixtures.GenerateRole;
 import io.github.mrgsrylm.wallet.fixtures.GenerateUser;
-import io.github.mrgsrylm.wallet.model.Role;
 import io.github.mrgsrylm.wallet.model.User;
 import io.github.mrgsrylm.wallet.repository.UserRepository;
-import io.github.mrgsrylm.wallet.security.UserDetailsImpl;
 import io.github.mrgsrylm.wallet.security.jwt.JwtUtils;
 import io.github.mrgsrylm.wallet.service.RoleService;
 import org.junit.jupiter.api.Assertions;
@@ -24,10 +20,8 @@ import org.mockito.Mockito;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.List;
 import java.util.Optional;
 
 class AuthServiceImplTest extends BaseServiceTest {

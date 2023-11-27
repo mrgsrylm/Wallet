@@ -42,7 +42,7 @@ public class WalletServiceImpl implements WalletService {
 
         final Wallet wallet = walletRequestMapper.toEntity(request);
         repository.save(wallet);
-        log.info(CREATED_WALLET, new Object[]{wallet.getIban(), wallet.getName(), wallet.getBalance()});
+        log.info(CREATED_WALLET, wallet.getIban(), wallet.getName(), wallet.getBalance());
 
         // add this initial amount to the transactions
         transactionService.create(walletTransactionRequestMapper.toTransactionDto(request));
@@ -59,7 +59,7 @@ public class WalletServiceImpl implements WalletService {
         toWallet.setBalance(toWallet.getBalance().add(request.getAmount()));
 
         repository.save(toWallet);
-        log.info(UPDATED_WALLET_BALANCE, new Object[]{toWallet.getBalance()});
+        log.info(UPDATED_WALLET_BALANCE, toWallet.getBalance());
 
         final CommandResponse response = transactionService.create(request);
         return CommandResponse.builder().id(response.id()).build();
@@ -173,6 +173,6 @@ public class WalletServiceImpl implements WalletService {
         final Wallet wallet = repository.findById(id)
                 .orElseThrow(() -> new NoSuchElementFoundException(NOT_FOUND_WALLET));
         repository.delete(wallet);
-        log.info(DELETED_WALLET, new Object[]{wallet.getIban(), wallet.getName(), wallet.getBalance()});
+        log.info(DELETED_WALLET, wallet.getIban(), wallet.getName(), wallet.getBalance());
     }
 }
