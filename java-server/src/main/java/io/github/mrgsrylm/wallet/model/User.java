@@ -1,9 +1,12 @@
 package io.github.mrgsrylm.wallet.model;
 
+import io.github.mrgsrylm.wallet.model.enums.TokenClaims;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Data
@@ -69,5 +72,15 @@ public class User {
     public void removeWallet(Wallet wallet) {
         wallets.remove(wallet);
         wallet.setUser(null);
+    }
+
+    public Map<String, Object> getClaims() {
+        final Map<String, Object> claims = new HashMap<>();
+        claims.put(TokenClaims.ID.getValue(), this.id);
+        claims.put(TokenClaims.USERNAME.getValue(), this.username);
+        claims.put(TokenClaims.ROLES.getValue(), this.roles);
+        claims.put(TokenClaims.USER_FULL_NAME.getValue(), this.firstName + " " + this.firstName);
+        claims.put(TokenClaims.EMAIL.getValue(), this.email);
+        return claims;
     }
 }

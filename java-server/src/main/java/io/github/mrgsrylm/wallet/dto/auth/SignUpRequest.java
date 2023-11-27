@@ -3,6 +3,7 @@ package io.github.mrgsrylm.wallet.dto.auth;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.Set;
@@ -11,6 +12,7 @@ import java.util.Set;
  * Data Transfer Object for Signup request
  */
 @Data
+@Builder
 public class SignUpRequest {
     private Long id;
 

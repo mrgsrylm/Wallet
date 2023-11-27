@@ -1,0 +1,5 @@
+app:
+  security:
+    jwtSecret: "secret"
+    # 1 hour
+    jwtExpirationMs: 3600000

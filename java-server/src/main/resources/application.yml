@@ -31,6 +31,20 @@ spring:
     enabled: true
     placeholderReplacement: false
     baseline-on-migrate: true
+  mvc:
+    throw-exception-if-no-handler-found: true
+  servlet:
+    multipart:
+      max-file-size: 1MB
+      max-request-size: 10MB
+
+server:
+  port: 8080
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: on_param
+    include-exception: false
 
 logging:
   file:
@@ -49,3 +63,12 @@ logging:
     org.springframework: warn
     org.hibernate: error
     org.springframework.security: error
+
+exception:
+  trace: true
+
+app:
+  security:
+    jwtSecret: ${JWT_SECRET}
+    # 1 hour
+    jwtExpirationMs: 3600000
