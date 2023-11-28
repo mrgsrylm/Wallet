@@ -13,18 +13,17 @@ spring:
   jackson:
     date-format: 'dd.MM.yyyy'
   datasource:
+    driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://${PG_HOST:localhost}:${PG_PORT:5432}/${PG_DB}
     username: ${PG_USER:root}
     password: ${PG_PASSWORD:my-secret-pw}
   jpa:
     hibernate:
       ddl-auto: validate
-    show-sql: false
+    show-sql: true
     open-in-view: false
     properties:
       hibernate.format_sql: true
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
       open-in-view: false
       generate-ddl: true
   flyway:

@@ -6,7 +6,7 @@ import io.github.mrgsrylm.wallet.dto.wallet.*;
 import io.github.mrgsrylm.wallet.exception.ElementAlreadyExistsException;
 import io.github.mrgsrylm.wallet.exception.InsufficientFundsException;
 import io.github.mrgsrylm.wallet.exception.NoSuchElementFoundException;
-import io.github.mrgsrylm.wallet.model.Wallet;
+import io.github.mrgsrylm.wallet.model.WalletModel;
 import io.github.mrgsrylm.wallet.repository.WalletRepository;
 import io.github.mrgsrylm.wallet.service.TransactionService;
 import io.github.mrgsrylm.wallet.service.WalletService;
@@ -40,26 +40,26 @@ public class WalletServiceImpl implements WalletService {
         if (repository.existsByUserIdAndNameIgnoreCase(request.getUserId(), request.getName()))
             throw new ElementAlreadyExistsException(ALREADY_EXISTS_WALLET_NAME);
 
-        final Wallet wallet = walletRequestMapper.toEntity(request);
-        repository.save(wallet);
-        log.info(CREATED_WALLET, wallet.getIban(), wallet.getName(), wallet.getBalance());
+        final WalletModel walletModel = walletRequestMapper.toEntity(request);
+        repository.save(walletModel);
+        log.info(CREATED_WALLET, walletModel.getIban(), walletModel.getName(), walletModel.getBalance());
 
         // add this initial amount to the transactions
         transactionService.create(walletTransactionRequestMapper.toTransactionDto(request));
 
-        return CommandResponse.builder().id(wallet.getId()).build();
+        return CommandResponse.builder().id(walletModel.getId()).build();
     }
 
     @Override
     @Transactional
     public CommandResponse addFunds(TransactionRequest request) {
-        final Wallet toWallet = getByIban(request.getToWalletIban());
+        final WalletModel toWalletModel = getByIban(request.getToWalletIban());
 
         // update balance of the receiver wallet
-        toWallet.setBalance(toWallet.getBalance().add(request.getAmount()));
+        toWalletModel.setBalance(toWalletModel.getBalance().add(request.getAmount()));
 
-        repository.save(toWallet);
-        log.info(UPDATED_WALLET_BALANCE, toWallet.getBalance());
+        repository.save(toWalletModel);
+        log.info(UPDATED_WALLET_BALANCE, toWalletModel.getBalance());
 
         final CommandResponse response = transactionService.create(request);
         return CommandResponse.builder().id(response.id()).build();
@@ -68,21 +68,21 @@ public class WalletServiceImpl implements WalletService {
     @Override
     @Transactional
     public CommandResponse transferFunds(TransactionRequest request) {
-        final Wallet toWallet = getByIban(request.getToWalletIban());
-        final Wallet fromWallet = getByIban(request.getFromWalletIban());
+        final WalletModel toWalletModel = getByIban(request.getToWalletIban());
+        final WalletModel fromWalletModel = getByIban(request.getFromWalletIban());
 
         // check if the balance of sender wallet has equal or higher to/than transfer amount
-        if (fromWallet.getBalance().compareTo(request.getAmount()) < 0)
+        if (fromWalletModel.getBalance().compareTo(request.getAmount()) < 0)
             throw new InsufficientFundsException(FUNDS_CANNOT_BELOW_ZERO);
 
         // update balance of the sender wallet
-        fromWallet.setBalance(fromWallet.getBalance().subtract(request.getAmount()));
+        fromWalletModel.setBalance(fromWalletModel.getBalance().subtract(request.getAmount()));
 
         // update balance of the receiver wallet
-        toWallet.setBalance(toWallet.getBalance().add(request.getAmount()));
+        toWalletModel.setBalance(toWalletModel.getBalance().add(request.getAmount()));
 
-        repository.save(toWallet);
-        log.info(UPDATED_WALLET_BALANCES, new Object[]{fromWallet.getBalance(), toWallet.getBalance()});
+        repository.save(toWalletModel);
+        log.info(UPDATED_WALLET_BALANCES, new Object[]{fromWalletModel.getBalance(), toWalletModel.getBalance()});
 
         final CommandResponse response = transactionService.create(request);
         return CommandResponse.builder().id(response.id()).build();
@@ -91,17 +91,17 @@ public class WalletServiceImpl implements WalletService {
     @Override
     @Transactional
     public CommandResponse withdrawFunds(TransactionRequest request) {
-        final Wallet fromWallet = getByIban(request.getFromWalletIban());
+        final WalletModel fromWalletModel = getByIban(request.getFromWalletIban());
 
         // check if the balance of sender wallet has equal or higher to/than transfer amount
-        if (fromWallet.getBalance().compareTo(request.getAmount()) < 0)
+        if (fromWalletModel.getBalance().compareTo(request.getAmount()) < 0)
             throw new InsufficientFundsException(FUNDS_CANNOT_BELOW_ZERO);
 
         // update balance of the sender wallet
-        fromWallet.setBalance(fromWallet.getBalance().subtract(request.getAmount()));
+        fromWalletModel.setBalance(fromWalletModel.getBalance().subtract(request.getAmount()));
 
-        repository.save(fromWallet);
-        log.info(UPDATED_WALLET_BALANCE, new Object[]{fromWallet.getBalance()});
+        repository.save(fromWalletModel);
+        log.info(UPDATED_WALLET_BALANCE, new Object[]{fromWalletModel.getBalance()});
 
         final CommandResponse response = transactionService.create(request);
         return CommandResponse.builder().id(response.id()).build();
@@ -142,37 +142,37 @@ public class WalletServiceImpl implements WalletService {
 
     @Override
     @Transactional(readOnly = true)
-    public Wallet getByIban(String iban) {
+    public WalletModel getByIban(String iban) {
         return repository.findByIban(iban)
                 .orElseThrow(() -> new NoSuchElementException(NOT_FOUND_WALLET));
     }
 
     @Override
     public CommandResponse update(WalletRequest request) {
-        final Wallet foundWallet = repository.findById(request.getId())
+        final WalletModel foundWalletModel = repository.findById(request.getId())
                 .orElseThrow(() -> new NoSuchElementFoundException(NOT_FOUND_WALLET));
 
         // check if the iban is changed and new iban is already exists
-        if (!request.getIban().equalsIgnoreCase(foundWallet.getIban()) &&
+        if (!request.getIban().equalsIgnoreCase(foundWalletModel.getIban()) &&
                 repository.existsByIbanIgnoreCase(request.getIban()))
             throw new ElementAlreadyExistsException(ALREADY_EXISTS_WALLET_IBAN);
 
         // check if the name is changed and new name is already exists in user's wallets
-        if (!request.getName().equalsIgnoreCase(foundWallet.getName()) &&
+        if (!request.getName().equalsIgnoreCase(foundWalletModel.getName()) &&
                 repository.existsByUserIdAndNameIgnoreCase(request.getUserId(), request.getName()))
             throw new ElementAlreadyExistsException(ALREADY_EXISTS_WALLET_NAME);
 
-        final Wallet wallet = walletRequestMapper.toEntity(request);
-        repository.save(wallet);
-        log.info(UPDATED_WALLET, new Object[]{wallet.getIban(), wallet.getName(), wallet.getBalance()});
-        return CommandResponse.builder().id(wallet.getId()).build();
+        final WalletModel walletModel = walletRequestMapper.toEntity(request);
+        repository.save(walletModel);
+        log.info(UPDATED_WALLET, new Object[]{walletModel.getIban(), walletModel.getName(), walletModel.getBalance()});
+        return CommandResponse.builder().id(walletModel.getId()).build();
     }
 
     @Override
     public void deleteById(long id) {
-        final Wallet wallet = repository.findById(id)
+        final WalletModel walletModel = repository.findById(id)
                 .orElseThrow(() -> new NoSuchElementFoundException(NOT_FOUND_WALLET));
-        repository.delete(wallet);
-        log.info(DELETED_WALLET, wallet.getIban(), wallet.getName(), wallet.getBalance());
+        repository.delete(walletModel);
+        log.info(DELETED_WALLET, walletModel.getIban(), walletModel.getName(), walletModel.getBalance());
     }
 }

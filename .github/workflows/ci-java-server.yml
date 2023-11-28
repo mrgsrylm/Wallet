@@ -3,6 +3,7 @@ name: Java Server CI Pipeline
 on:
   push:
     branches:
+      - dev
       - java-server
 
 jobs:
@@ -21,7 +22,7 @@ jobs:
           cache: 'maven'
 
       - name: Build with Maven
-        run: cd java-server && mvn -B package --file pom.xml
+        run: cd java-server && mvn install
 
       - name: Cache Maven packages
         uses: actions/cache@v3
@@ -31,4 +32,4 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
 
       - name: Run Tests
-        run: cd java-server && mvn -B test
+        run: cd java-server && mvn test

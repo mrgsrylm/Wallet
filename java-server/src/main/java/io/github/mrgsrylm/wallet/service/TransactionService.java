@@ -14,7 +14,7 @@ public interface TransactionService {
 
     Page<TransactionResponse> findAll(Pageable pageable);
 
-    List<TransactionResponse> findAllByUserId(Long userId);
+    // List<TransactionResponse> findAllByUserId(Long userId);
 
     TransactionResponse findById(long id);
 

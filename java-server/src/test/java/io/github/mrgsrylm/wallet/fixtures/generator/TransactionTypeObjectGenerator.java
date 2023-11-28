@@ -2,7 +2,7 @@ package io.github.mrgsrylm.wallet.fixtures.generator;
 
 import com.github.javafaker.Faker;
 import io.github.mrgsrylm.wallet.fixtures.RandomUtil;
-import io.github.mrgsrylm.wallet.model.TransactionType;
+import io.github.mrgsrylm.wallet.model.TransactionTypeModel;
 
 public class TransactionTypeObjectGenerator {
     private final Faker faker;
@@ -11,13 +11,13 @@ public class TransactionTypeObjectGenerator {
         this.faker = new Faker();
     }
 
-    public TransactionType generateTransactionType() {
-        TransactionType transactionType = new TransactionType();
-        transactionType.setId(RandomUtil.generateRandomLong(1, 100));
-        transactionType.setName(generateName());
-        transactionType.setDescription(generateDescription());
+    public TransactionTypeModel generateTransactionType() {
+        TransactionTypeModel transactionTypeModel = new TransactionTypeModel();
+        transactionTypeModel.setId(RandomUtil.generateRandomLong(1, 100));
+        transactionTypeModel.setName(generateName());
+        transactionTypeModel.setDescription(generateDescription());
         // transactionType.setTransactions(generateTransactions(transactionType));
-        return transactionType;
+        return transactionTypeModel;
     }
 
     private String generateName() {

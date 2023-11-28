@@ -7,10 +7,8 @@ import io.github.mrgsrylm.wallet.dto.wallet.*;
 import io.github.mrgsrylm.wallet.exception.ElementAlreadyExistsException;
 import io.github.mrgsrylm.wallet.exception.NoSuchElementFoundException;
 import io.github.mrgsrylm.wallet.fixtures.GenerateTransaction;
-import io.github.mrgsrylm.wallet.fixtures.GenerateUser;
 import io.github.mrgsrylm.wallet.fixtures.GenerateWallet;
-import io.github.mrgsrylm.wallet.model.User;
-import io.github.mrgsrylm.wallet.model.Wallet;
+import io.github.mrgsrylm.wallet.model.WalletModel;
 import io.github.mrgsrylm.wallet.repository.WalletRepository;
 import io.github.mrgsrylm.wallet.service.TransactionService;
 import org.junit.jupiter.api.Assertions;
@@ -42,7 +40,7 @@ public class WalletServiceImplTest extends BaseServiceTest {
     @Test
     void givenWalletRequest_whenCreate_ReturnSuccess() {
         WalletRequest request = GenerateWallet.buildWalletRequest();
-        Wallet mockWallet = GenerateWallet.build();
+        WalletModel mockWalletModel = GenerateWallet.build();
         TransactionRequest mockTransRequest = GenerateTransaction.buildTransactionRequest();
         CommandResponse transactionId = CommandResponse.builder().id(1L).build();
 
@@ -51,9 +49,9 @@ public class WalletServiceImplTest extends BaseServiceTest {
         Mockito.when(walletRepository.existsByUserIdAndNameIgnoreCase(Mockito.anyLong(), Mockito.anyString()))
                 .thenReturn(false);
         Mockito.when(walletRequestMapper.toEntity(Mockito.any(WalletRequest.class)))
-                .thenReturn(mockWallet);
-        Mockito.when(walletRepository.save(Mockito.any(Wallet.class)))
-                .thenReturn(mockWallet);
+                .thenReturn(mockWalletModel);
+        Mockito.when(walletRepository.save(Mockito.any(WalletModel.class)))
+                .thenReturn(mockWalletModel);
         Mockito.when(walletTransactionRequestMapper.toTransactionDto(Mockito.any(WalletRequest.class)))
                         .thenReturn(mockTransRequest);
         Mockito.when(transactionService.create(Mockito.any(TransactionRequest.class)))
@@ -62,7 +60,7 @@ public class WalletServiceImplTest extends BaseServiceTest {
         CommandResponse result = service.create(request);
 
         Assertions.assertNotNull(result);
-        Assertions.assertEquals(mockWallet.getId(), result.id());
+        Assertions.assertEquals(mockWalletModel.getId(), result.id());
         Mockito.verify(walletRepository, Mockito.times(1))
                 .existsByIbanIgnoreCase(Mockito.anyString());
         Mockito.verify(walletRepository, Mockito.times(1))
@@ -70,7 +68,7 @@ public class WalletServiceImplTest extends BaseServiceTest {
         Mockito.verify(walletRequestMapper, Mockito.times(1))
                 .toEntity(Mockito.any(WalletRequest.class));
         Mockito.verify(walletRepository, Mockito.times(1))
-                .save(Mockito.any(Wallet.class));
+                .save(Mockito.any(WalletModel.class));
         Mockito.verify(walletTransactionRequestMapper, Mockito.times(1))
                 .toTransactionDto(Mockito.any(WalletRequest.class));
         Mockito.verify(transactionService, Mockito.times(1))
@@ -102,13 +100,13 @@ public class WalletServiceImplTest extends BaseServiceTest {
     @Test
     void givenTransactionRequest_whenAddFunds_ReturnSuccess() {
         TransactionRequest request = GenerateTransaction.buildTransactionRequest();
-        Wallet sender = GenerateWallet.build();
-        Wallet receiver = GenerateWallet.build();
+        WalletModel sender = GenerateWallet.build();
+        WalletModel receiver = GenerateWallet.build();
         CommandResponse transactionId = CommandResponse.builder().id(request.getId()).build();
 
         Mockito.when(walletRepository.findByIban(Mockito.anyString()))
                 .thenReturn(Optional.of(receiver));
-        Mockito.when(walletRepository.save(Mockito.any(Wallet.class)))
+        Mockito.when(walletRepository.save(Mockito.any(WalletModel.class)))
                 .thenReturn(receiver);
         Mockito.when(transactionService.create(Mockito.any(TransactionRequest.class)))
                 .thenReturn(transactionId);
@@ -120,7 +118,7 @@ public class WalletServiceImplTest extends BaseServiceTest {
         Mockito.verify(walletRepository, Mockito.times(1))
                 .findByIban(Mockito.anyString());
         Mockito.verify(walletRepository, Mockito.times(1))
-                .save(Mockito.any(Wallet.class));
+                .save(Mockito.any(WalletModel.class));
         Mockito.verify(transactionService, Mockito.times(1))
                 .create(Mockito.any(TransactionRequest.class));
     }
@@ -128,15 +126,15 @@ public class WalletServiceImplTest extends BaseServiceTest {
     @Test
     void givenTransactionRequest_whenTransferFunds_ReturnSuccess() {
         TransactionRequest request = GenerateTransaction.buildTransactionRequest();
-        Wallet sender = GenerateWallet.build();
-        Wallet receiver = GenerateWallet.build();
+        WalletModel sender = GenerateWallet.build();
+        WalletModel receiver = GenerateWallet.build();
         CommandResponse transactionId = CommandResponse.builder().id(request.getId()).build();
 
         Mockito.when(walletRepository.findByIban(Mockito.anyString()))
                 .thenReturn(Optional.of(sender));
         Mockito.when(walletRepository.findByIban(Mockito.anyString()))
                 .thenReturn(Optional.of(receiver));
-        Mockito.when(walletRepository.save(Mockito.any(Wallet.class)))
+        Mockito.when(walletRepository.save(Mockito.any(WalletModel.class)))
                 .thenReturn(receiver);
         Mockito.when(transactionService.create(Mockito.any(TransactionRequest.class)))
                 .thenReturn(transactionId);
@@ -148,7 +146,7 @@ public class WalletServiceImplTest extends BaseServiceTest {
         Mockito.verify(walletRepository, Mockito.times(2))
                 .findByIban(Mockito.anyString());
         Mockito.verify(walletRepository, Mockito.times(1))
-                .save(Mockito.any(Wallet.class));
+                .save(Mockito.any(WalletModel.class));
         Mockito.verify(transactionService, Mockito.times(1))
                 .create(Mockito.any(TransactionRequest.class));
     }
@@ -156,12 +154,12 @@ public class WalletServiceImplTest extends BaseServiceTest {
     @Test
     void givenTransactionRequest_whenWithdrawFunds_ReturnSuccess() {
         TransactionRequest request = GenerateTransaction.buildTransactionRequest();
-        Wallet sender = GenerateWallet.build();
+        WalletModel sender = GenerateWallet.build();
         CommandResponse transactionId = CommandResponse.builder().id(request.getId()).build();
 
         Mockito.when(walletRepository.findByIban(Mockito.anyString()))
                 .thenReturn(Optional.of(sender));
-        Mockito.when(walletRepository.save(Mockito.any(Wallet.class)))
+        Mockito.when(walletRepository.save(Mockito.any(WalletModel.class)))
                 .thenReturn(sender);
         Mockito.when(transactionService.create(Mockito.any(TransactionRequest.class)))
                 .thenReturn(transactionId);
@@ -173,7 +171,7 @@ public class WalletServiceImplTest extends BaseServiceTest {
         Mockito.verify(walletRepository, Mockito.times(1))
                 .findByIban(Mockito.anyString());
         Mockito.verify(walletRepository, Mockito.times(1))
-                .save(Mockito.any(Wallet.class));
+                .save(Mockito.any(WalletModel.class));
         Mockito.verify(transactionService, Mockito.times(1))
                 .create(Mockito.any(TransactionRequest.class));
     }
@@ -181,13 +179,13 @@ public class WalletServiceImplTest extends BaseServiceTest {
     @Test
     void givenNoParam_whenFindAll_ReturnSuccess() {
         Pageable pageable = PageRequest.of(0, 10, Sort.by("id").ascending());
-        List<Wallet> wallets = GenerateWallet.buildListWallet();
-        Page<Wallet> mockPageWallets = new PageImpl<>(wallets, pageable, wallets.size());
+        List<WalletModel> walletModels = GenerateWallet.buildListWallet();
+        Page<WalletModel> mockPageWallets = new PageImpl<>(walletModels, pageable, walletModels.size());
 
         WalletResponse mockWalletResponse = GenerateWallet.buildWalletResponse();
 
         Mockito.when(walletRepository.findAll(Mockito.any(Pageable.class))).thenReturn(mockPageWallets);
-        Mockito.when(walletResponseMapper.toDto(Mockito.any(Wallet.class))).thenReturn(mockWalletResponse);
+        Mockito.when(walletResponseMapper.toDto(Mockito.any(WalletModel.class))).thenReturn(mockWalletResponse);
 
 
         Page<WalletResponse> result = service.findAll(pageable);
@@ -196,7 +194,7 @@ public class WalletServiceImplTest extends BaseServiceTest {
         Mockito.verify(walletRepository, Mockito.times(1))
                 .findAll(Mockito.any(Pageable.class));
         Mockito.verify(walletResponseMapper, Mockito.times(2))
-                .toDto(Mockito.any(Wallet.class));
+                .toDto(Mockito.any(WalletModel.class));
     }
 
     @Test
@@ -211,10 +209,10 @@ public class WalletServiceImplTest extends BaseServiceTest {
     @Test
     void givenUserId_whenFindByUserId_ReturnSuccess() {
         WalletResponse mockWalletResponse = GenerateWallet.buildWalletResponse();
-        List<Wallet> mockListWallet = GenerateWallet.buildListWallet();
+        List<WalletModel> mockListWalletModel = GenerateWallet.buildListWallet();
 
-        Mockito.when(walletRepository.findByUserId(Mockito.anyLong())).thenReturn(mockListWallet);
-        Mockito.when(walletResponseMapper.toDto(Mockito.any(Wallet.class))).thenReturn(mockWalletResponse);
+        Mockito.when(walletRepository.findByUserId(Mockito.anyLong())).thenReturn(mockListWalletModel);
+        Mockito.when(walletResponseMapper.toDto(Mockito.any(WalletModel.class))).thenReturn(mockWalletResponse);
 
 
         List<WalletResponse> result = service.findByUserId(mockWalletResponse.getUser().getId());
@@ -223,17 +221,17 @@ public class WalletServiceImplTest extends BaseServiceTest {
         Mockito.verify(walletRepository, Mockito.times(1))
                 .findByUserId(Mockito.anyLong());
         Mockito.verify(walletResponseMapper, Mockito.times(2))
-                .toDto(Mockito.any(Wallet.class));
+                .toDto(Mockito.any(WalletModel.class));
     }
 
     @Test
     void givenID_whenFindById_ReturnSuccess() {
         WalletResponse mockWalletResponse = GenerateWallet.buildWalletResponse();
 
-        Wallet mockWallet = GenerateWallet.build();
+        WalletModel mockWalletModel = GenerateWallet.build();
 
-        Mockito.when(walletRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(mockWallet));
-        Mockito.when(walletResponseMapper.toDto(Mockito.any(Wallet.class))).thenReturn(mockWalletResponse);
+        Mockito.when(walletRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(mockWalletModel));
+        Mockito.when(walletResponseMapper.toDto(Mockito.any(WalletModel.class))).thenReturn(mockWalletResponse);
 
 
         WalletResponse result = service.findById(mockWalletResponse.getId());
@@ -242,7 +240,7 @@ public class WalletServiceImplTest extends BaseServiceTest {
         Mockito.verify(walletRepository, Mockito.times(1))
                 .findById(Mockito.anyLong());
         Mockito.verify(walletResponseMapper, Mockito.times(1))
-                .toDto(Mockito.any(Wallet.class));
+                .toDto(Mockito.any(WalletModel.class));
     }
 
     @Test
@@ -256,10 +254,10 @@ public class WalletServiceImplTest extends BaseServiceTest {
     void givenIban_whenFindByIban_ReturnSuccess() {
         WalletResponse mockWalletResponse = GenerateWallet.buildWalletResponse();
 
-        Wallet mockWallet = GenerateWallet.build();
+        WalletModel mockWalletModel = GenerateWallet.build();
 
-        Mockito.when(walletRepository.findByIban(Mockito.anyString())).thenReturn(Optional.of(mockWallet));
-        Mockito.when(walletResponseMapper.toDto(Mockito.any(Wallet.class))).thenReturn(mockWalletResponse);
+        Mockito.when(walletRepository.findByIban(Mockito.anyString())).thenReturn(Optional.of(mockWalletModel));
+        Mockito.when(walletResponseMapper.toDto(Mockito.any(WalletModel.class))).thenReturn(mockWalletResponse);
 
 
         WalletResponse result = service.findByIban(mockWalletResponse.getIban());
@@ -268,7 +266,7 @@ public class WalletServiceImplTest extends BaseServiceTest {
         Mockito.verify(walletRepository, Mockito.times(1))
                 .findByIban(Mockito.anyString());
         Mockito.verify(walletResponseMapper, Mockito.times(1))
-                .toDto(Mockito.any(Wallet.class));
+                .toDto(Mockito.any(WalletModel.class));
     }
 
     @Test
@@ -280,11 +278,11 @@ public class WalletServiceImplTest extends BaseServiceTest {
 
     @Test
     void givenIban_whenGetByIban_ReturnSuccess() {
-        Wallet mockWallet = GenerateWallet.build();
+        WalletModel mockWalletModel = GenerateWallet.build();
 
-        Mockito.when(walletRepository.findByIban(Mockito.anyString())).thenReturn(Optional.of(mockWallet));
+        Mockito.when(walletRepository.findByIban(Mockito.anyString())).thenReturn(Optional.of(mockWalletModel));
 
-        Wallet result = service.getByIban(mockWallet.getIban());
+        WalletModel result = service.getByIban(mockWalletModel.getIban());
 
         Assertions.assertNotNull(result);
         Mockito.verify(walletRepository, Mockito.times(1))
@@ -300,20 +298,20 @@ public class WalletServiceImplTest extends BaseServiceTest {
 
     @Test
     void givenWalletRequest_whenUpdate_ReturnSuccess() {
-        Wallet mockWallet = GenerateWallet.build();
+        WalletModel mockWalletModel = GenerateWallet.build();
         WalletRequest request = GenerateWallet.buildWalletRequest();
-        request.setId(mockWallet.getId());
+        request.setId(mockWalletModel.getId());
 
         Mockito.when(walletRepository.findById(Mockito.anyLong()))
-                .thenReturn(Optional.of(mockWallet));
+                .thenReturn(Optional.of(mockWalletModel));
         Mockito.when(walletRepository.existsByIbanIgnoreCase(Mockito.anyString()))
                 .thenReturn(false);
         Mockito.when(walletRepository.existsByUserIdAndNameIgnoreCase(Mockito.anyLong(), Mockito.anyString()))
                 .thenReturn(false);
         Mockito.when(walletRequestMapper.toEntity(Mockito.any(WalletRequest.class)))
-                .thenReturn(mockWallet);
-        Mockito.when(walletRepository.save(Mockito.any(Wallet.class)))
-                .thenReturn(mockWallet);
+                .thenReturn(mockWalletModel);
+        Mockito.when(walletRepository.save(Mockito.any(WalletModel.class)))
+                .thenReturn(mockWalletModel);
 
         CommandResponse result = service.update(request);
 
@@ -328,7 +326,7 @@ public class WalletServiceImplTest extends BaseServiceTest {
         Mockito.verify(walletRequestMapper, Mockito.times(1))
                 .toEntity(Mockito.any(WalletRequest.class));
         Mockito.verify(walletRepository, Mockito.times(1))
-                .save(Mockito.any(Wallet.class));
+                .save(Mockito.any(WalletModel.class));
     }
 
     @Test
@@ -343,12 +341,12 @@ public class WalletServiceImplTest extends BaseServiceTest {
 
     @Test
     void givenWalletRequest_whenUpdate_ReturnFailedCauseIban() {
-        Wallet mockWallet = GenerateWallet.build();
+        WalletModel mockWalletModel = GenerateWallet.build();
         WalletRequest request = GenerateWallet.buildWalletRequest();
-        request.setId(mockWallet.getId());
+        request.setId(mockWalletModel.getId());
 
         Mockito.when(walletRepository.findById(Mockito.anyLong()))
-                .thenReturn(Optional.of(mockWallet));
+                .thenReturn(Optional.of(mockWalletModel));
         Mockito.when(walletRepository.existsByIbanIgnoreCase(Mockito.anyString()))
                 .thenReturn(true);
 
@@ -357,12 +355,12 @@ public class WalletServiceImplTest extends BaseServiceTest {
 
     @Test
     void givenWalletRequest_whenUpdate_ReturnFailedCauseUserIdAndName() {
-        Wallet mockWallet = GenerateWallet.build();
+        WalletModel mockWalletModel = GenerateWallet.build();
         WalletRequest request = GenerateWallet.buildWalletRequest();
-        request.setId(mockWallet.getId());
+        request.setId(mockWalletModel.getId());
 
         Mockito.when(walletRepository.findById(Mockito.anyLong()))
-                .thenReturn(Optional.of(mockWallet));
+                .thenReturn(Optional.of(mockWalletModel));
         Mockito.when(walletRepository.existsByIbanIgnoreCase(Mockito.anyString()))
                 .thenReturn(false);
         Mockito.when(walletRepository.existsByUserIdAndNameIgnoreCase(Mockito.anyLong(), Mockito.anyString()))
@@ -373,29 +371,29 @@ public class WalletServiceImplTest extends BaseServiceTest {
 
     @Test
     void givenIDRequest_whenDeleteById_ReturnSuccess() {
-        Wallet mockWallet = GenerateWallet.build();
+        WalletModel mockWalletModel = GenerateWallet.build();
         WalletRequest request = GenerateWallet.buildWalletRequest();
-        request.setId(mockWallet.getId());
+        request.setId(mockWalletModel.getId());
 
         Mockito.when(walletRepository.findById(Mockito.anyLong()))
-                .thenReturn(Optional.of(mockWallet));
-        Mockito.doNothing().when(walletRepository).delete(Mockito.any(Wallet.class));
+                .thenReturn(Optional.of(mockWalletModel));
+        Mockito.doNothing().when(walletRepository).delete(Mockito.any(WalletModel.class));
 
-        service.deleteById(mockWallet.getId());
+        service.deleteById(mockWalletModel.getId());
 
-        Mockito.verify(walletRepository, Mockito.times(1)).delete(Mockito.any(Wallet.class));
+        Mockito.verify(walletRepository, Mockito.times(1)).delete(Mockito.any(WalletModel.class));
     }
 
     @Test
     void givenInvalidIdRequest_whenDeleteById_ReturnException() {
-        Wallet mockWallet = GenerateWallet.build();
+        WalletModel mockWalletModel = GenerateWallet.build();
         WalletRequest request = GenerateWallet.buildWalletRequest();
-        request.setId(mockWallet.getId());
+        request.setId(mockWalletModel.getId());
 
         Mockito.when(walletRepository.findById(Mockito.anyLong()))
                 .thenReturn(Optional.empty());
 
-        Assertions.assertThrows(NoSuchElementFoundException.class, () -> service.deleteById(mockWallet.getId()));
+        Assertions.assertThrows(NoSuchElementFoundException.class, () -> service.deleteById(mockWalletModel.getId()));
     }
 }
 

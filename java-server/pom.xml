@@ -10,7 +10,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
-	<groupId>io.github.mrgsrylm.wallet</groupId>
+	<groupId>io.github.mrgsrylm.walletModel</groupId>
 	<artifactId>java-server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>java-server</name>

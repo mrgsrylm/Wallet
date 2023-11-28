@@ -35,7 +35,7 @@ public class JwtUtils {
         Date expirationDate = new Date(now.getTime() + jwtExpirationMs);
 
         return Jwts.builder()
-//                .setClaims(claims) // issue when integration test
+                .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(now)
                 .setExpiration(expirationDate)
@@ -72,17 +72,11 @@ public class JwtUtils {
         return extractClaims(token).get(TokenClaims.ID.getValue()).toString();
     }
 
-    public String getEmailFromJwtToken(String token) {
-        return extractClaims(token).get(TokenClaims.EMAIL.getValue()).toString();
-    }
-
     public boolean validateJwtToken(String authToken) {
         log.info("JwtUtils | validateJwtToken | authToken: {}", authToken);
         try {
             Jwts.parserBuilder().setSigningKey(signedInKey()).build().parseClaimsJws(authToken);
             return true;
-        } catch (SignatureException e) {
-            log.error(INVALID_JWT_SIGN, e.getMessage());
         } catch (MalformedJwtException e) {
             log.error(INVALID_JWT_TOKEN, e.getMessage());
         } catch (ExpiredJwtException e) {

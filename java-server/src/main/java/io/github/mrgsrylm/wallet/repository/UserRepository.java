@@ -1,14 +1,16 @@
 package io.github.mrgsrylm.wallet.repository;
 
-import io.github.mrgsrylm.wallet.model.User;
+import io.github.mrgsrylm.wallet.model.UserModel;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByUsername(String username);
+@Repository
+public interface UserRepository extends JpaRepository<UserModel, Long> {
+    Optional<UserModel> findByUsername(String username);
 
-    Optional<User> findByEmail(String email);
+    Optional<UserModel> findByEmail(String email);
 
     boolean existsByUsernameIgnoreCase(String name);
 

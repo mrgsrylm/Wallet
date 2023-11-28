@@ -6,8 +6,10 @@ import io.github.mrgsrylm.wallet.dto.transaction.TransactionRequestMapper;
 import io.github.mrgsrylm.wallet.dto.transaction.TransactionResponse;
 import io.github.mrgsrylm.wallet.dto.transaction.TransactionResponseMapper;
 import io.github.mrgsrylm.wallet.exception.NoSuchElementFoundException;
-import io.github.mrgsrylm.wallet.model.Transaction;
+import io.github.mrgsrylm.wallet.model.TransactionModel;
 import io.github.mrgsrylm.wallet.repository.TransactionRepository;
+import io.github.mrgsrylm.wallet.repository.UserRepository;
+import io.github.mrgsrylm.wallet.repository.WalletRepository;
 import io.github.mrgsrylm.wallet.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,10 +34,10 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     @Transactional
     public CommandResponse create(TransactionRequest request) {
-        final Transaction transaction = transactionRequestMapper.toEntity(request);
-        transactionRepository.save(transaction);
-        log.info(CREATED_TRANSACTION, transaction.getFromWallet().getIban(), transaction.getToWallet().getIban(), transaction.getAmount());
-        return CommandResponse.builder().id(transaction.getId()).build();
+        final TransactionModel transactionModel = transactionRequestMapper.toEntity(request);
+        transactionRepository.save(transactionModel);
+        log.info(CREATED_TRANSACTION, transactionModel.getFromWallet().getIban(), transactionModel.getToWallet().getIban(), transactionModel.getAmount());
+        return CommandResponse.builder().id(transactionModel.getId()).build();
     }
 
     @Override
@@ -48,16 +50,17 @@ public class TransactionServiceImpl implements TransactionService {
         return transactions;
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public List<TransactionResponse> findAllByUserId(Long userId) {
-        final List<TransactionResponse> transactions = transactionRepository.findAllByUserId(userId).stream()
-                .map(transactionResponseMapper::toDto).toList();
-
-        if (transactions.isEmpty())
-            throw new NoSuchElementFoundException(NOT_FOUND_RECORD);
-        return transactions;
-    }
+//    @Override
+//    @Transactional(readOnly = true)
+//    public List<TransactionResponse> findAllByUserId(Long userId) {
+//        transactionRepository.
+//        final List<TransactionResponse> transactions = transactionRepository.findAllByUserId(userId).stream()
+//                .map(transactionResponseMapper::toDto).toList();
+//
+//        if (transactions.isEmpty())
+//            throw new NoSuchElementFoundException(NOT_FOUND_RECORD);
+//        return transactions;
+//    }
 
     @Override
     @Transactional(readOnly = true)

@@ -4,7 +4,7 @@ import io.github.mrgsrylm.wallet.dto.CommandResponse;
 import io.github.mrgsrylm.wallet.dto.transaction.TransactionRequest;
 import io.github.mrgsrylm.wallet.dto.wallet.WalletRequest;
 import io.github.mrgsrylm.wallet.dto.wallet.WalletResponse;
-import io.github.mrgsrylm.wallet.model.Wallet;
+import io.github.mrgsrylm.wallet.model.WalletModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -27,7 +27,7 @@ public interface WalletService {
 
     WalletResponse findByIban(String iban);
 
-    Wallet getByIban(String iban);
+    WalletModel getByIban(String iban);
 
     CommandResponse update(WalletRequest request);
 

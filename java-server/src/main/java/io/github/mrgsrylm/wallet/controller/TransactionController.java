@@ -33,7 +33,6 @@ public class TransactionController {
      * @param id
      * @return TransactionResponse wrapped by ResponseEntity<ApiResponse<T>>
      */
-    @PreAuthorize("hasRole(T(io.github.mrgsrylm.wallet.model.enums.RoleType).ROLE_USER)")
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<TransactionResponse>> findById(@PathVariable long id) {
         final TransactionResponse response = transactionService.findById(id);
@@ -46,7 +45,6 @@ public class TransactionController {
      * @param referenceNumber
      * @return TransactionResponse wrapped by ResponseEntity<ApiResponse<T>>
      */
-    @PreAuthorize("hasRole(T(io.github.mrgsrylm.wallet.model.enums.RoleType).ROLE_USER)")
     @GetMapping("/references/{referenceNumber}")
     public ResponseEntity<ApiResponse<TransactionResponse>> findByReferenceNumber(@PathVariable UUID referenceNumber) {
         final TransactionResponse response = transactionService.findByReferenceNumber(referenceNumber);
@@ -59,12 +57,12 @@ public class TransactionController {
      * @param userId
      * @return List of TransactionResponse wrapped by ResponseEntity<ApiResponse<T>>
      */
-    @PreAuthorize("hasRole(T(io.github.mrgsrylm.wallet.model.enums.RoleType).ROLE_USER)")
-    @GetMapping("/users/{userId}")
-    public ResponseEntity<ApiResponse<Page<TransactionResponse>>> findAllByUserId(@PathVariable long userId) {
-        final Page<TransactionResponse> response = new PageImpl<>(transactionService.findAllByUserId(userId));
-        return ResponseEntity.ok(new ApiResponse<>(Instant.now(clock).toEpochMilli(), SUCCESS, response));
-    }
+//    @PreAuthorize("hasRole(T(io.github.mrgsrylm.wallet.model.enums.RoleType).user)")
+//    @GetMapping("/users/{userId}")
+//    public ResponseEntity<ApiResponse<Page<TransactionResponse>>> findAllByUserId(@PathVariable long userId) {
+//        final Page<TransactionResponse> response = new PageImpl<>(transactionService.findAllByUserId(userId));
+//        return ResponseEntity.ok(new ApiResponse<>(Instant.now(clock).toEpochMilli(), SUCCESS, response));
+//    }
 
     /**
      * Fetches all transactions based on the given paging and sorting parameters
@@ -72,7 +70,6 @@ public class TransactionController {
      * @param pageable
      * @return List of TransactionResponse wrapped by ResponseEntity<ApiResponse<T>>
      */
-    @PreAuthorize("hasRole(T(io.github.mrgsrylm.wallet.model.enums.RoleType).ROLE_USER)")
     @GetMapping
     public ResponseEntity<ApiResponse<Page<TransactionResponse>>> findAll(Pageable pageable) {
         final Page<TransactionResponse> response = transactionService.findAll(pageable);

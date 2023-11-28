@@ -13,7 +13,6 @@ export default function SignupForm() {
     username: '',
     email: '',
     password: '',
-    roles: ['ROLE_USER'],
   };
 
   const navigate = useNavigate();

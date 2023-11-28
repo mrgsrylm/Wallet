@@ -3,50 +3,50 @@ package io.github.mrgsrylm.wallet.fixtures;
 import io.github.mrgsrylm.wallet.dto.transaction.TransactionRequest;
 import io.github.mrgsrylm.wallet.dto.transaction.TransactionResponse;
 import io.github.mrgsrylm.wallet.fixtures.generator.TransactionObjectGenerator;
-import io.github.mrgsrylm.wallet.model.Transaction;
-import io.github.mrgsrylm.wallet.model.TransactionType;
-import io.github.mrgsrylm.wallet.model.Wallet;
+import io.github.mrgsrylm.wallet.model.TransactionModel;
+import io.github.mrgsrylm.wallet.model.TransactionTypeModel;
+import io.github.mrgsrylm.wallet.model.WalletModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GenerateTransaction {
-    public static Transaction build() {
-        Wallet wallet1 = GenerateWallet.build();
-        Wallet wallet2 = GenerateWallet.build();
-        TransactionType type = GenerateTransactionType.build();
+    public static TransactionModel build() {
+        WalletModel walletModel1 = GenerateWallet.build();
+        WalletModel walletModel2 = GenerateWallet.build();
+        TransactionTypeModel type = GenerateTransactionType.build();
         TransactionObjectGenerator generator = new TransactionObjectGenerator();
 
-        return generator.generateTransaction(wallet1, wallet2, type);
+        return generator.generateTransaction(walletModel1, walletModel2, type);
     }
 
     public static TransactionRequest buildTransactionRequest() {
-        Transaction transaction = build();
+        TransactionModel transactionModel = build();
 
         return TransactionRequest.builder()
-                .amount(transaction.getAmount())
-                .description(transaction.getDescription())
-                .createdAt(transaction.getCreatedAt())
-                .referenceNumber(transaction.getReferenceNumber())
-                .status(transaction.getStatus())
-                .fromWalletIban(transaction.getFromWallet().getIban())
-                .toWalletIban(transaction.getToWallet().getIban())
-                .transactionTypeId(transaction.getTransactionType().getId())
+                .amount(transactionModel.getAmount())
+                .description(transactionModel.getDescription())
+                .createdAt(transactionModel.getCreatedAt())
+                .referenceNumber(transactionModel.getReferenceNumber())
+                .status(transactionModel.getStatus())
+                .fromWalletIban(transactionModel.getFromWallet().getIban())
+                .toWalletIban(transactionModel.getToWallet().getIban())
+                .transactionTypeId(transactionModel.getTransactionType().getId())
                 .build();
     }
 
-    public static List<Transaction> buildList() {
-        Transaction transaction1 = build();
-        Transaction transaction2 = build();
-        List<Transaction> transactions = new ArrayList<>();
-        transactions.add(transaction1);
-        transactions.add(transaction2);
+    public static List<TransactionModel> buildList() {
+        TransactionModel transactionModel1 = build();
+        TransactionModel transactionModel2 = build();
+        List<TransactionModel> transactionModels = new ArrayList<>();
+        transactionModels.add(transactionModel1);
+        transactionModels.add(transactionModel2);
 
-        return transactions;
+        return transactionModels;
     }
 
     public static TransactionResponse buildTransactionResponse() {
-        Transaction data = build();
+        TransactionModel data = build();
         return TransactionResponse.builder()
                 .id(RandomUtil.generateRandomLong(1, 100))
                 .amount(data.getAmount())
@@ -71,7 +71,7 @@ public class GenerateTransaction {
     }
 
     public static TransactionRequest bulidTransactionRequest() {
-        Transaction data = build();
+        TransactionModel data = build();
 
         return TransactionRequest.builder()
                 .amount(data.getAmount())

@@ -14,7 +14,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class ApiResponse<T> implements Serializable {
     private static final long serialVersionUID = 1L;
-
     private Long timestamp;
     private final String message;
     private final T data;

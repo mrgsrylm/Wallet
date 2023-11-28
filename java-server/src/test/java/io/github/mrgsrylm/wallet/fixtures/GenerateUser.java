@@ -3,29 +3,29 @@ package io.github.mrgsrylm.wallet.fixtures;
 import io.github.mrgsrylm.wallet.dto.auth.SignUpRequest;
 import io.github.mrgsrylm.wallet.dto.user.UserResponse;
 import io.github.mrgsrylm.wallet.fixtures.generator.UserObjectGenerator;
-import io.github.mrgsrylm.wallet.model.User;
+import io.github.mrgsrylm.wallet.model.UserModel;
+import io.github.mrgsrylm.wallet.model.enums.RoleType;
 
 public class GenerateUser {
-    public static User build() {
+    public static UserModel buildUser() {
         UserObjectGenerator generator = new UserObjectGenerator();
 
-        return generator.generateUser(GenerateRole.buildAsSet());
+        return generator.generateUser(RoleType.USER);
     }
 
     public static SignUpRequest buildSignUpRequest() {
-        User user = build();
+        UserModel userModel = buildUser();
 
         return SignUpRequest.builder()
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .password(user.getPassword())
-                .roles(GenerateRole.buildAsSetStringType()).build();
+                .firstName(userModel.getFirstName())
+                .lastName(userModel.getLastName())
+                .username(userModel.getUsername())
+                .email(userModel.getEmail())
+                .password(userModel.getPassword()).build();
     }
 
     public static UserResponse buildUserResponse() {
-        User data = build();
+        UserModel data = buildUser();
         return UserResponse.builder()
                 .id(data.getId())
                 .firstName(data.getFirstName())
@@ -33,8 +33,7 @@ public class GenerateUser {
                 .username(data.getUsername())
                 .email(data.getEmail())
                 .fullName(data.getFirstName() + " " + data.getLastName())
-                .roles(GenerateRole.buildRoleResponseAsSet())
-                .build();
+                .role(data.getRole().getLabel()).build();
     }
 
 //    public static SignUpRequest buildSignUpRequest() {

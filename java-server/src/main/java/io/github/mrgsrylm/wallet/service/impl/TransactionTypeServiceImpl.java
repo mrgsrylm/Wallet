@@ -1,6 +1,6 @@
 package io.github.mrgsrylm.wallet.service.impl;
 
-import io.github.mrgsrylm.wallet.model.TransactionType;
+import io.github.mrgsrylm.wallet.model.TransactionTypeModel;
 import io.github.mrgsrylm.wallet.repository.TransactionTypeRepository;
 import io.github.mrgsrylm.wallet.service.TransactionTypeService;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ public class TransactionTypeServiceImpl implements TransactionTypeService {
     private final TransactionTypeRepository repository;
 
     @Override
-    public TransactionType getReferenceById(long id) {
+    public TransactionTypeModel getReferenceById(long id) {
         return repository.getReferenceById(id);
     }
 }

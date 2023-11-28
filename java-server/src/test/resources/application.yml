@@ -5,15 +5,16 @@ spring:
     init:
       mode: always
   jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
     hibernate:
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      ddl-auto: validate
+    show-sql: true
+    open-in-view: false
+    properties:
+      hibernate.format_sql: true
+      open-in-view: false
+      generate-ddl: true
   datasource:
-    name: postgresql
+    driver-class-name: org.postgresql.Driver
     username: root
     password: my-secret-pw
     url: jdbc:postgresql://localhost:5432/dbtest

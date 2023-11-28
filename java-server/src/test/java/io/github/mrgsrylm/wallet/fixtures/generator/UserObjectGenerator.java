@@ -2,10 +2,9 @@ package io.github.mrgsrylm.wallet.fixtures.generator;
 
 import com.github.javafaker.Faker;
 import io.github.mrgsrylm.wallet.fixtures.RandomUtil;
-import io.github.mrgsrylm.wallet.model.Role;
-import io.github.mrgsrylm.wallet.model.User;
+import io.github.mrgsrylm.wallet.model.UserModel;
+import io.github.mrgsrylm.wallet.model.enums.RoleType;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class UserObjectGenerator {
@@ -16,17 +15,17 @@ public class UserObjectGenerator {
         this.faker = new Faker();
     }
 
-    public User generateUser(Set<Role> roles) {
-        User user = new User();
-        user.setId(RandomUtil.generateRandomLong(1, 100));
-        user.setFirstName(faker.name().firstName());
-        user.setLastName(faker.name().lastName());
-        user.setUsername(generateUsername(user.getFirstName(), user.getLastName()));
-        user.setEmail(generateEmail(user.getFirstName(), user.getLastName()));
-        user.setPassword(generatePassword());
-        user.setRoles(roles);
+    public UserModel generateUser(RoleType roleType) {
+        UserModel userModel = new UserModel();
+        userModel.setId(RandomUtil.generateRandomLong(1, 100));
+        userModel.setFirstName(faker.name().firstName());
+        userModel.setLastName(faker.name().lastName());
+        userModel.setUsername(generateUsername(userModel.getFirstName(), userModel.getLastName()));
+        userModel.setEmail(generateEmail(userModel.getFirstName(), userModel.getLastName()));
+        userModel.setPassword(generatePassword());
+        userModel.setRole(roleType);
         // user.setWallets(generateWallets(user));
-        return user;
+        return userModel;
     }
 
     private String generateUsername(String firstName, String lastName) {
@@ -41,15 +40,6 @@ public class UserObjectGenerator {
         // You can customize the logic for generating passwords based on your requirements
         return faker.internet().password();
     }
-
-//    private Set<Role> generateRoles() {
-//        RoleObjectGenerator genRole = new RoleObjectGenerator();
-//
-//        // You can customize the logic for generating roles based on your requirements
-//        Set<Role> roles = new HashSet<>();
-//        roles.add(genRole.generateRole());
-//        return roles;
-//    }
 
 //    private Set<Wallet> generateWallets(User user) {
 //        // You can customize the logic for generating wallets based on your requirements

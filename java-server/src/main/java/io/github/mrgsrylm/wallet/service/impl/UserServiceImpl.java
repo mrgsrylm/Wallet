@@ -1,6 +1,6 @@
 package io.github.mrgsrylm.wallet.service.impl;
 
-import io.github.mrgsrylm.wallet.model.User;
+import io.github.mrgsrylm.wallet.model.UserModel;
 import io.github.mrgsrylm.wallet.repository.UserRepository;
 import io.github.mrgsrylm.wallet.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository repository;
 
     @Override
-    public User getReferenceById(long id) {
+    public UserModel getReferenceById(long id) {
         return repository.getReferenceById(id);
     }
 }
