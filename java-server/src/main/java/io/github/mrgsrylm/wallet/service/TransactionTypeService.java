@@ -1,7 +1,7 @@
 package io.github.mrgsrylm.wallet.service;
 
-import io.github.mrgsrylm.wallet.model.TransactionType;
+import io.github.mrgsrylm.wallet.model.TransactionTypeModel;
 
 public interface TransactionTypeService {
-    TransactionType getReferenceById(long id);
+    TransactionTypeModel getReferenceById(long id);
 }

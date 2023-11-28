@@ -2,7 +2,7 @@ package io.github.mrgsrylm.wallet.service.impl;
 
 import io.github.mrgsrylm.wallet.base.BaseServiceTest;
 import io.github.mrgsrylm.wallet.fixtures.GenerateTransactionType;
-import io.github.mrgsrylm.wallet.model.TransactionType;
+import io.github.mrgsrylm.wallet.model.TransactionTypeModel;
 import io.github.mrgsrylm.wallet.repository.TransactionTypeRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -19,11 +19,11 @@ public class TransactionTypeServiceImplTest extends BaseServiceTest {
 
     @Test
     void givenId_whenGetReferenceById_ReturnSuccessUser() {
-        TransactionType mockTType = GenerateTransactionType.build();
+        TransactionTypeModel mockTType = GenerateTransactionType.build();
 
         Mockito.when(repository.getReferenceById(Mockito.anyLong())).thenReturn(mockTType);
 
-        TransactionType result = service.getReferenceById(1L);
+        TransactionTypeModel result = service.getReferenceById(1L);
 
         Assertions.assertNotNull(result);
         Assertions.assertEquals(result, mockTType);

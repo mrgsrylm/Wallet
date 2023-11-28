@@ -1,7 +1,7 @@
 package io.github.mrgsrylm.wallet.service;
 
-import io.github.mrgsrylm.wallet.model.User;
+import io.github.mrgsrylm.wallet.model.UserModel;
 
 public interface UserService {
-    User getReferenceById(long id);
+    UserModel getReferenceById(long id);
 }

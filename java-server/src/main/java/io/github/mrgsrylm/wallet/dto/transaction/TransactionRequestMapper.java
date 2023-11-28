@@ -1,6 +1,6 @@
 package io.github.mrgsrylm.wallet.dto.transaction;
 
-import io.github.mrgsrylm.wallet.model.Transaction;
+import io.github.mrgsrylm.wallet.model.TransactionModel;
 import io.github.mrgsrylm.wallet.service.TransactionTypeService;
 import io.github.mrgsrylm.wallet.service.WalletService;
 import org.mapstruct.*;
@@ -34,12 +34,12 @@ public abstract class TransactionRequestMapper {
     @Mapping(target = "fromWallet", ignore = true)
     @Mapping(target = "toWallet", ignore = true)
     @Mapping(target = "transactionType", ignore = true)
-    public abstract Transaction toEntity(TransactionRequest dto);
+    public abstract TransactionModel toEntity(TransactionRequest dto);
 
-    public abstract TransactionRequest toDto(Transaction entity);
+    public abstract TransactionRequest toDto(TransactionModel entity);
 
     @AfterMapping
-    void setToEntityFields(@MappingTarget Transaction entity, TransactionRequest dto) {
+    void setToEntityFields(@MappingTarget TransactionModel entity, TransactionRequest dto) {
         entity.setFromWallet(walletService.getByIban(dto.getFromWalletIban()));
         entity.setToWallet(walletService.getByIban(dto.getToWalletIban()));
         entity.setTransactionType(typeService.getReferenceById(dto.getTransactionTypeId()));

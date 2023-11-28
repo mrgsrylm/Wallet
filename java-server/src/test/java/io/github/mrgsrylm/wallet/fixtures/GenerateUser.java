@@ -3,29 +3,29 @@ package io.github.mrgsrylm.wallet.fixtures;
 import io.github.mrgsrylm.wallet.dto.auth.SignUpRequest;
 import io.github.mrgsrylm.wallet.dto.user.UserResponse;
 import io.github.mrgsrylm.wallet.fixtures.generator.UserObjectGenerator;
-import io.github.mrgsrylm.wallet.model.User;
+import io.github.mrgsrylm.wallet.model.UserModel;
 
 public class GenerateUser {
-    public static User build() {
+    public static UserModel build() {
         UserObjectGenerator generator = new UserObjectGenerator();
 
         return generator.generateUser(GenerateRole.buildAsSet());
     }
 
     public static SignUpRequest buildSignUpRequest() {
-        User user = build();
+        UserModel userModel = build();
 
         return SignUpRequest.builder()
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .password(user.getPassword())
+                .firstName(userModel.getFirstName())
+                .lastName(userModel.getLastName())
+                .username(userModel.getUsername())
+                .email(userModel.getEmail())
+                .password(userModel.getPassword())
                 .roles(GenerateRole.buildAsSetStringType()).build();
     }
 
     public static UserResponse buildUserResponse() {
-        User data = build();
+        UserModel data = build();
         return UserResponse.builder()
                 .id(data.getId())
                 .firstName(data.getFirstName())

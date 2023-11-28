@@ -30,12 +30,12 @@ public class JwtUtils {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String createToken(Map<String, Object> claims, String subject) {
+    public String createToken(UserDetailsImpl userDetails, String subject) {
         Date now = new Date();
         Date expirationDate = new Date(now.getTime() + jwtExpirationMs);
 
         return Jwts.builder()
-//                .setClaims(claims) // issue when integration test
+                .claim("roles", userDetails.getAuthorities())
                 .setSubject(subject)
                 .setIssuedAt(now)
                 .setExpiration(expirationDate)
@@ -45,14 +45,11 @@ public class JwtUtils {
 
     public String generateJwtToken(Authentication authentication) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        Map<String, Object> claims = userDetails.getClaims();
-        return createToken(claims, userDetails.getUsername());
+        return createToken(userDetails, userDetails.getUsername());
     }
 
     public String generateJwtToken(UserDetailsImpl customUserDetails) {
-        Map<String, Object> claims = customUserDetails.getClaims();
-        claims.put(TokenClaims.ID.getValue(), customUserDetails.getId());
-        return createToken(claims, customUserDetails.getUsername());
+        return createToken(customUserDetails, customUserDetails.getUsername());
     }
 
 
@@ -72,17 +69,11 @@ public class JwtUtils {
         return extractClaims(token).get(TokenClaims.ID.getValue()).toString();
     }
 
-    public String getEmailFromJwtToken(String token) {
-        return extractClaims(token).get(TokenClaims.EMAIL.getValue()).toString();
-    }
-
     public boolean validateJwtToken(String authToken) {
         log.info("JwtUtils | validateJwtToken | authToken: {}", authToken);
         try {
             Jwts.parserBuilder().setSigningKey(signedInKey()).build().parseClaimsJws(authToken);
             return true;
-        } catch (SignatureException e) {
-            log.error(INVALID_JWT_SIGN, e.getMessage());
         } catch (MalformedJwtException e) {
             log.error(INVALID_JWT_TOKEN, e.getMessage());
         } catch (ExpiredJwtException e) {

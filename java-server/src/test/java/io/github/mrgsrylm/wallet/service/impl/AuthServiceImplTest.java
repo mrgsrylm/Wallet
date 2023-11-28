@@ -8,7 +8,7 @@ import io.github.mrgsrylm.wallet.dto.auth.SignUpRequest;
 import io.github.mrgsrylm.wallet.dto.auth.SignUpRequestMapper;
 import io.github.mrgsrylm.wallet.exception.ElementAlreadyExistsException;
 import io.github.mrgsrylm.wallet.fixtures.GenerateUser;
-import io.github.mrgsrylm.wallet.model.User;
+import io.github.mrgsrylm.wallet.model.UserModel;
 import io.github.mrgsrylm.wallet.repository.UserRepository;
 import io.github.mrgsrylm.wallet.security.jwt.JwtUtils;
 import io.github.mrgsrylm.wallet.service.RoleService;
@@ -44,23 +44,23 @@ class AuthServiceImplTest extends BaseServiceTest {
     @Test
     void givenSignUpRequest_WhenSignUp_ReturnSuccess() {
         SignUpRequest request = GenerateUser.buildSignUpRequest();
-        User mockUser = GenerateUser.build();
+        UserModel mockUserModel = GenerateUser.build();
 
         Mockito.when(userRepository.existsByUsernameIgnoreCase(Mockito.anyString())).thenReturn(false);
         Mockito.when(userRepository.existsByEmailIgnoreCase(Mockito.anyString())).thenReturn(false);
-        Mockito.when(signUpRequestMapper.toEntity(Mockito.any(SignUpRequest.class))).thenReturn(mockUser);
-        Mockito.when(userRepository.save(Mockito.any(User.class))).thenReturn(mockUser);
+        Mockito.when(signUpRequestMapper.toEntity(Mockito.any(SignUpRequest.class))).thenReturn(mockUserModel);
+        Mockito.when(userRepository.save(Mockito.any(UserModel.class))).thenReturn(mockUserModel);
 
         CommandResponse result = authService.signup(request);
 
-        Assertions.assertEquals(result.id(), mockUser.getId());
+        Assertions.assertEquals(result.id(), mockUserModel.getId());
         Mockito.verify(userRepository, Mockito.times(1))
                 .existsByUsernameIgnoreCase(Mockito.anyString());
         Mockito.verify(userRepository, Mockito.times(1))
                 .existsByEmailIgnoreCase(Mockito.anyString());
         Mockito.verify(signUpRequestMapper, Mockito.times(1))
                 .toEntity(Mockito.any(SignUpRequest.class));
-        // Mockito.verify(userRepository, Mockito.times(1)).save(Mockito.eq(mockUser));
+        Mockito.verify(userRepository, Mockito.times(1)).save(Mockito.eq(mockUserModel));
     }
 
     @Test
@@ -71,7 +71,7 @@ class AuthServiceImplTest extends BaseServiceTest {
         Mockito.when(userRepository.existsByEmailIgnoreCase(Mockito.anyString())).thenReturn(true);
 
         Assertions.assertThrows(ElementAlreadyExistsException.class, () -> authService.signup(request));
-        Mockito.verify(userRepository, Mockito.never()).save(Mockito.any(User.class));
+        Mockito.verify(userRepository, Mockito.never()).save(Mockito.any(UserModel.class));
     }
 
     @Test
@@ -81,29 +81,29 @@ class AuthServiceImplTest extends BaseServiceTest {
         Mockito.when(userRepository.existsByUsernameIgnoreCase(Mockito.anyString())).thenReturn(true);
 
         Assertions.assertThrows(ElementAlreadyExistsException.class, () -> authService.signup(request));
-        Mockito.verify(userRepository, Mockito.never()).save(Mockito.any(User.class));
+        Mockito.verify(userRepository, Mockito.never()).save(Mockito.any(UserModel.class));
     }
 
     @Test
     void givenLoginRequest_WhenLogin_ReturnSuccess() {
-        User mockUser = GenerateUser.build();
+        UserModel mockUserModel = GenerateUser.build();
         LoginRequest mockRequest  = LoginRequest.builder()
-                .username(mockUser.getUsername()).password(mockUser.getPassword()).build();
+                .username(mockUserModel.getUsername()).password(mockUserModel.getPassword()).build();
 
         Authentication mockAuthentication = new UsernamePasswordAuthenticationToken(mockRequest.getUsername(), mockRequest.getPassword());
 
         Mockito.when(authenticationManager.authenticate(Mockito.any(UsernamePasswordAuthenticationToken.class)))
                 .thenReturn(mockAuthentication);
         Mockito.when(jwtUtils.generateJwtToken(mockAuthentication)).thenReturn("mockedToken");
-        Mockito.when(userRepository.findByUsername(mockRequest.getUsername())).thenReturn(Optional.of(mockUser));
+        Mockito.when(userRepository.findByUsername(mockRequest.getUsername())).thenReturn(Optional.of(mockUserModel));
 
         JwtResponse result = authService.login(mockRequest);
 
         Assertions.assertNotNull(result);
         Assertions.assertEquals(mockRequest.getUsername(), result.getUsername());
-        Assertions.assertEquals(mockUser.getFirstName(), result.getFirstName());
-        Assertions.assertEquals(mockUser.getLastName(), result.getLastName());
-        Assertions.assertEquals(mockUser.getRoles().stream().map(item -> item.getType().getLabel()).toList(), result.getRoles());
+        Assertions.assertEquals(mockUserModel.getFirstName(), result.getFirstName());
+        Assertions.assertEquals(mockUserModel.getLastName(), result.getLastName());
+        Assertions.assertEquals(mockUserModel.getRoles().stream().map(item -> item.getType().getLabel()).toList(), result.getRoles());
         Assertions.assertEquals("mockedToken", result.getToken());
     }
 

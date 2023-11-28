@@ -2,7 +2,7 @@ package io.github.mrgsrylm.wallet.service.impl;
 
 import io.github.mrgsrylm.wallet.base.BaseServiceTest;
 import io.github.mrgsrylm.wallet.fixtures.GenerateUser;
-import io.github.mrgsrylm.wallet.model.User;
+import io.github.mrgsrylm.wallet.model.UserModel;
 import io.github.mrgsrylm.wallet.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -19,14 +19,14 @@ public class UserServiceImplTest extends BaseServiceTest {
 
     @Test
     void givenId_whenGetReferenceById_ReturnSuccessUser() {
-        User mockUser = GenerateUser.build();
+        UserModel mockUserModel = GenerateUser.build();
 
-        Mockito.when(userRepository.getReferenceById(Mockito.anyLong())).thenReturn(mockUser);
+        Mockito.when(userRepository.getReferenceById(Mockito.anyLong())).thenReturn(mockUserModel);
 
-        User result = service.getReferenceById(1L);
+        UserModel result = service.getReferenceById(1L);
 
         Assertions.assertNotNull(result);
-        Assertions.assertEquals(result, mockUser);
+        Assertions.assertEquals(result, mockUserModel);
         Mockito.verify(userRepository, Mockito.times(1)).getReferenceById(Mockito.anyLong());
 
     }

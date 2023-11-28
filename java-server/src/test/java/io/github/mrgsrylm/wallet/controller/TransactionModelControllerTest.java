@@ -1,11 +1,8 @@
 package io.github.mrgsrylm.wallet.controller;
 
 import io.github.mrgsrylm.wallet.base.BaseControllerTest;
-import io.github.mrgsrylm.wallet.dto.CommandResponse;
-import io.github.mrgsrylm.wallet.dto.auth.SignUpRequest;
 import io.github.mrgsrylm.wallet.dto.transaction.TransactionResponse;
 import io.github.mrgsrylm.wallet.fixtures.GenerateTransaction;
-import io.github.mrgsrylm.wallet.model.Transaction;
 import io.github.mrgsrylm.wallet.service.TransactionService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -15,18 +12,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class TransactionControllerTest extends BaseControllerTest {
+class TransactionModelControllerTest extends BaseControllerTest {
     @MockBean
     private TransactionService transactionService;
 
@@ -57,20 +50,20 @@ class TransactionControllerTest extends BaseControllerTest {
     }
 
 
-    void givenUserIdRequest_WhenFindByUserIdNumber_ReturnSuccess() throws Exception {
-        Pageable pageable = PageRequest.of(0, 10, Sort.by("id").ascending());
-        TransactionResponse mockTransaction = GenerateTransaction.buildTransactionResponse();
-        Long userId = mockTransaction.getFromWallet().getUser().getId();
-        List<TransactionResponse> mockListTransactions = new ArrayList<>();
-        mockListTransactions.add(mockTransaction);
-
-        Mockito.when(transactionService.findAllByUserId(userId)).thenReturn(mockListTransactions);
-
-        mockMvc.perform(get("/api/v1/transactions/users/{userId}",userId)
-                        .header(HttpHeaders.AUTHORIZATION, mockUserToken)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-    }
+//    void givenUserIdRequest_WhenFindByUserIdNumber_ReturnSuccess() throws Exception {
+//        Pageable pageable = PageRequest.of(0, 10, Sort.by("id").ascending());
+//        TransactionResponse mockTransaction = GenerateTransaction.buildTransactionResponse();
+//        Long userId = mockTransaction.getFromWallet().getUser().getId();
+//        List<TransactionResponse> mockListTransactions = new ArrayList<>();
+//        mockListTransactions.add(mockTransaction);
+//
+//        Mockito.when(transactionService.findAllByUserId(userId)).thenReturn(mockListTransactions);
+//
+//        mockMvc.perform(get("/api/v1/transactions/users/{userId}",userId)
+//                        .header(HttpHeaders.AUTHORIZATION, mockUserToken)
+//                        .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk());
+//    }
 
     @Test
     void givenPageable_WhenFindAll_ReturnSuccess() throws Exception {

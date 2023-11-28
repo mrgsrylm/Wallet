@@ -1,6 +1,6 @@
 package io.github.mrgsrylm.wallet.service.impl;
 
-import io.github.mrgsrylm.wallet.model.Role;
+import io.github.mrgsrylm.wallet.model.RoleModel;
 import io.github.mrgsrylm.wallet.model.enums.RoleType;
 import io.github.mrgsrylm.wallet.repository.RoleRepository;
 import io.github.mrgsrylm.wallet.service.RoleService;
@@ -23,7 +23,7 @@ public class RoleServiceImpl implements RoleService {
      * @param types
      * @return List of Role
      */
-    public List<Role> getReferenceByTypeIsIn(Set<RoleType> types) {
+    public List<RoleModel> getReferenceByTypeIsIn(Set<RoleType> types) {
         return roleRepository.getReferenceByTypeIsIn(types);
     }
 
@@ -32,7 +32,7 @@ public class RoleServiceImpl implements RoleService {
      *
      * @return List of Role
      */
-    public List<Role> findAll() {
+    public List<RoleModel> findAll() {
         return roleRepository.findAll();
     }
 }

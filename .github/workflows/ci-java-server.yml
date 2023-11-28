@@ -3,6 +3,7 @@ name: Java Server CI Pipeline
 on:
   push:
     branches:
+      - dev
       - java-server
 
 jobs:

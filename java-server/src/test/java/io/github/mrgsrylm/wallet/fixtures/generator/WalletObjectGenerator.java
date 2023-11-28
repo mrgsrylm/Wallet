@@ -2,8 +2,8 @@ package io.github.mrgsrylm.wallet.fixtures.generator;
 
 import com.github.javafaker.Faker;
 import io.github.mrgsrylm.wallet.fixtures.RandomUtil;
-import io.github.mrgsrylm.wallet.model.User;
-import io.github.mrgsrylm.wallet.model.Wallet;
+import io.github.mrgsrylm.wallet.model.UserModel;
+import io.github.mrgsrylm.wallet.model.WalletModel;
 
 import java.math.BigDecimal;
 
@@ -15,16 +15,16 @@ public class WalletObjectGenerator {
         this.faker = new Faker();
     }
 
-    public Wallet generateWallet(User user) {
-        Wallet wallet = new Wallet();
-        wallet.setId(RandomUtil.generateRandomLong(1, 100));
-        wallet.setIban(generateIban());
-        wallet.setName(generateName());
-        wallet.setBalance(generateBalance());
-        wallet.setUser(user);
+    public WalletModel generateWallet(UserModel userModel) {
+        WalletModel walletModel = new WalletModel();
+        walletModel.setId(RandomUtil.generateRandomLong(1, 100));
+        walletModel.setIban(generateIban());
+        walletModel.setName(generateName());
+        walletModel.setBalance(generateBalance());
+        walletModel.setUser(userModel);
 //        wallet.setFromTransactions(generateTransactions(wallet, TransactionType.FROM));
 //        wallet.setToTransactions(generateTransactions(wallet, TransactionType.TO));
-        return wallet;
+        return walletModel;
     }
 
     private String generateIban() {

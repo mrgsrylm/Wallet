@@ -2,30 +2,23 @@ package io.github.mrgsrylm.wallet.model;
 
 import io.github.mrgsrylm.wallet.model.enums.TransactionStatus;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity(name = "transactions")
 @EqualsAndHashCode(of = {"referenceNumber"})
-@Entity
-@Table(name = "transaction")
-public class Transaction {
+public class TransactionModel {
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "sequence-transaction"
-    )
-    @SequenceGenerator(
-            name = "sequence-transaction",
-            sequenceName = "sequence_transaction",
-            allocationSize = 5
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, unique = true)
@@ -46,13 +39,13 @@ public class Transaction {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "from_wallet_id", referencedColumnName = "id", nullable = false)
-    private Wallet fromWallet;
+    private WalletModel fromWallet;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "to_wallet_id", referencedColumnName = "id", nullable = false)
-    private Wallet toWallet;
+    private WalletModel toWallet;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "transaction_type_id", referencedColumnName = "id", nullable = false)
-    private TransactionType transactionType;
+    private TransactionTypeModel transactionType;
 }

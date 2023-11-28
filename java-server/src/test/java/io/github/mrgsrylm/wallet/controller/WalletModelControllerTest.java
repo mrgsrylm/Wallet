@@ -3,7 +3,6 @@ package io.github.mrgsrylm.wallet.controller;
 import io.github.mrgsrylm.wallet.base.BaseControllerTest;
 import io.github.mrgsrylm.wallet.dto.CommandResponse;
 import io.github.mrgsrylm.wallet.dto.transaction.TransactionRequest;
-import io.github.mrgsrylm.wallet.dto.transaction.TransactionResponse;
 import io.github.mrgsrylm.wallet.dto.wallet.WalletRequest;
 import io.github.mrgsrylm.wallet.dto.wallet.WalletResponse;
 import io.github.mrgsrylm.wallet.fixtures.GenerateTransaction;
@@ -15,18 +14,16 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class WalletControllerTest extends BaseControllerTest {
+class WalletModelControllerTest extends BaseControllerTest {
     @MockBean
     private WalletService walletService;
 

@@ -2,29 +2,18 @@ package io.github.mrgsrylm.wallet.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "refresh_token")
-public class RefreshToken {
+@Entity(name = "refresh_tokens")
+public class RefreshTokenModel {
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "sequence-refresh-token"
-    )
-    @SequenceGenerator(
-            name = "sequence-refresh-token",
-            sequenceName = "sequence_refresh_token",
-            allocationSize = 5
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, unique = true)
@@ -35,5 +24,5 @@ public class RefreshToken {
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    private UserModel user;
 }

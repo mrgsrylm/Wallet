@@ -2,10 +2,9 @@ package io.github.mrgsrylm.wallet.fixtures.generator;
 
 import com.github.javafaker.Faker;
 import io.github.mrgsrylm.wallet.fixtures.RandomUtil;
-import io.github.mrgsrylm.wallet.model.Role;
-import io.github.mrgsrylm.wallet.model.User;
+import io.github.mrgsrylm.wallet.model.RoleModel;
+import io.github.mrgsrylm.wallet.model.UserModel;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class UserObjectGenerator {
@@ -16,17 +15,17 @@ public class UserObjectGenerator {
         this.faker = new Faker();
     }
 
-    public User generateUser(Set<Role> roles) {
-        User user = new User();
-        user.setId(RandomUtil.generateRandomLong(1, 100));
-        user.setFirstName(faker.name().firstName());
-        user.setLastName(faker.name().lastName());
-        user.setUsername(generateUsername(user.getFirstName(), user.getLastName()));
-        user.setEmail(generateEmail(user.getFirstName(), user.getLastName()));
-        user.setPassword(generatePassword());
-        user.setRoles(roles);
+    public UserModel generateUser(Set<RoleModel> roleModels) {
+        UserModel userModel = new UserModel();
+        userModel.setId(RandomUtil.generateRandomLong(1, 100));
+        userModel.setFirstName(faker.name().firstName());
+        userModel.setLastName(faker.name().lastName());
+        userModel.setUsername(generateUsername(userModel.getFirstName(), userModel.getLastName()));
+        userModel.setEmail(generateEmail(userModel.getFirstName(), userModel.getLastName()));
+        userModel.setPassword(generatePassword());
+        userModel.setRoles(roleModels);
         // user.setWallets(generateWallets(user));
-        return user;
+        return userModel;
     }
 
     private String generateUsername(String firstName, String lastName) {

@@ -2,8 +2,8 @@ package io.github.mrgsrylm.wallet.fixtures.generator;
 
 import com.github.javafaker.Faker;
 import io.github.mrgsrylm.wallet.fixtures.RandomUtil;
-import io.github.mrgsrylm.wallet.model.Role;
-import io.github.mrgsrylm.wallet.model.User;
+import io.github.mrgsrylm.wallet.model.RoleModel;
+import io.github.mrgsrylm.wallet.model.UserModel;
 import io.github.mrgsrylm.wallet.model.enums.RoleType;
 
 import java.util.HashSet;
@@ -17,30 +17,30 @@ public class RoleObjectGenerator {
         this.faker = new Faker();
     }
 
-    public Role generateRole() {
-        Role role = new Role();
-        role.setId(RandomUtil.generateRandomLong(1, 100));
-        role.setType(generateRoleType());
+    public RoleModel generateRole() {
+        RoleModel roleModel = new RoleModel();
+        roleModel.setId(RandomUtil.generateRandomLong(1, 100));
+        roleModel.setType(generateRoleType());
 //        role.setUsers(generateUsers(role));
-        return role;
+        return roleModel;
     }
 
     private RoleType generateRoleType() {
         return faker.options().option(RoleType.class);
     }
 
-    private Set<User> generateUsers(Role role) {
-        Set<Role> roleSet = new HashSet<>();
-        roleSet.add(role);
+    private Set<UserModel> generateUsers(RoleModel roleModel) {
+        Set<RoleModel> roleModelSet = new HashSet<>();
+        roleModelSet.add(roleModel);
 
         // You can customize the logic for generating users based on your requirements
         UserObjectGenerator userObjectGenerator = new UserObjectGenerator();
-        Set<User> users = new HashSet<>();
+        Set<UserModel> userModels = new HashSet<>();
         for (int i = 0; i < faker.number().numberBetween(1, 5); i++) {
-            User user = userObjectGenerator.generateUser(roleSet);
-            user.getRoles().add(role);
-            users.add(user);
+            UserModel userModel = userObjectGenerator.generateUser(roleModelSet);
+            userModel.getRoles().add(roleModel);
+            userModels.add(userModel);
         }
-        return users;
+        return userModels;
     }
 }

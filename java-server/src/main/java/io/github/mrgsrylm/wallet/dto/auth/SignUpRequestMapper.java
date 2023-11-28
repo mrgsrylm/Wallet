@@ -1,7 +1,7 @@
 package io.github.mrgsrylm.wallet.dto.auth;
 
-import io.github.mrgsrylm.wallet.model.Role;
-import io.github.mrgsrylm.wallet.model.User;
+import io.github.mrgsrylm.wallet.model.RoleModel;
+import io.github.mrgsrylm.wallet.model.UserModel;
 import io.github.mrgsrylm.wallet.model.enums.RoleType;
 import io.github.mrgsrylm.wallet.service.RoleService;
 import org.mapstruct.*;
@@ -35,18 +35,18 @@ public abstract class SignUpRequestMapper {
     @Mapping(target = "lastName", expression = "java(org.apache.commons.text.WordUtils.capitalizeFully(dto.getLastName()))")
     @Mapping(target = "username", expression = "java(dto.getUsername().trim().toLowerCase())")
     @Mapping(target = "email", expression = "java(dto.getEmail().trim().toLowerCase())")
-    @Mapping(target = "password", ignore = true)
+    @Mapping(target = "password", expression = "java(dto.getPassword())")
     @Mapping(target = "roles", ignore = true)
-    public abstract User toEntity(SignUpRequest dto);
+    public abstract UserModel toEntity(SignUpRequest dto);
 
     @AfterMapping
-    void setToEntityFields(@MappingTarget User entity, SignUpRequest dto) {
+    void setToEntityFields(@MappingTarget UserModel entity, SignUpRequest dto) {
         entity.setPassword(passwordEncoder.encode(dto.getPassword()));
 
         final List<RoleType> roleTypes = dto.getRoles().stream()
                 .map(RoleType::valueOf)
                 .toList();
-        final List<Role> roles = roleService.getReferenceByTypeIsIn(new HashSet<>(roleTypes));
-        entity.setRoles(new HashSet<>(roles));
+        final List<RoleModel> roleModels = roleService.getReferenceByTypeIsIn(new HashSet<>(roleTypes));
+        entity.setRoles(new HashSet<>(roleModels));
     }
 }

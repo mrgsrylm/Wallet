@@ -1,6 +1,6 @@
 package io.github.mrgsrylm.wallet.dto.transaction;
 
-import io.github.mrgsrylm.wallet.model.Transaction;
+import io.github.mrgsrylm.wallet.model.TransactionModel;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -17,13 +17,13 @@ import static io.github.mrgsrylm.wallet.common.Constants.DATE_TIME_FORMAT;
  */
 @Mapper(componentModel = "spring")
 public interface TransactionResponseMapper {
-    Transaction toEntity(TransactionResponse dto);
+    TransactionModel toEntity(TransactionResponse dto);
 
     @Mapping(target = "createdAt", ignore = true)
-    TransactionResponse toDto(Transaction entity);
+    TransactionResponse toDto(TransactionModel entity);
 
     @AfterMapping
-    default void formatCreatedAt(@MappingTarget TransactionResponse dto, Transaction entity) {
+    default void formatCreatedAt(@MappingTarget TransactionResponse dto, TransactionModel entity) {
         LocalDateTime datetime = LocalDateTime.ofInstant(entity.getCreatedAt(), ZoneOffset.UTC);
         dto.setCreatedAt(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT).format(datetime));
     }
