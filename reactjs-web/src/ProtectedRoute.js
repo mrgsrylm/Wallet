@@ -2,9 +2,9 @@ import { Navigate, Outlet } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import AuthService from './services/AuthService';
 
-const ProtectedRoute = ({ roles = [] }) => {
-  const userRoles = AuthService.getCurrentUser()?.roles;
-  const isAuthorized = !roles.length || roles.some((r) => userRoles.includes(r));
+const ProtectedRoute = ({ role }) => {
+  const userRoles = AuthService.getCurrentUser()?.role;
+  const isAuthorized = !role || userRoles;
 
   return isAuthorized ? <Outlet /> : <Navigate to="/unauthorized" replace />;
 };

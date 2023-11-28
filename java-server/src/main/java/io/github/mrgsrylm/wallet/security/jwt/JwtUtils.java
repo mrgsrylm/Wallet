@@ -30,12 +30,12 @@ public class JwtUtils {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String createToken(UserDetailsImpl userDetails, String subject) {
+    public String createToken(Map<String, Object> claims, String subject) {
         Date now = new Date();
         Date expirationDate = new Date(now.getTime() + jwtExpirationMs);
 
         return Jwts.builder()
-                .claim("roles", userDetails.getAuthorities())
+                .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(now)
                 .setExpiration(expirationDate)
@@ -45,11 +45,14 @@ public class JwtUtils {
 
     public String generateJwtToken(Authentication authentication) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        return createToken(userDetails, userDetails.getUsername());
+        Map<String, Object> claims = userDetails.getClaims();
+        return createToken(claims, userDetails.getUsername());
     }
 
     public String generateJwtToken(UserDetailsImpl customUserDetails) {
-        return createToken(customUserDetails, customUserDetails.getUsername());
+        Map<String, Object> claims = customUserDetails.getClaims();
+        claims.put(TokenClaims.ID.getValue(), customUserDetails.getId());
+        return createToken(claims, customUserDetails.getUsername());
     }
 
 

@@ -5,6 +5,7 @@ import io.github.mrgsrylm.wallet.dto.CommandResponse;
 import io.github.mrgsrylm.wallet.dto.auth.JwtResponse;
 import io.github.mrgsrylm.wallet.dto.auth.LoginRequest;
 import io.github.mrgsrylm.wallet.dto.auth.SignUpRequest;
+import io.github.mrgsrylm.wallet.model.enums.RoleType;
 import io.github.mrgsrylm.wallet.service.impl.AuthServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -31,7 +32,6 @@ public class AuthControllerTest extends BaseControllerTest {
                 .username("johndoe")
                 .email("john.doe@example.com")
                 .password("password123")
-                .roles(new HashSet<>(Set.of("USER")))
                 .build();
 
 
@@ -59,7 +59,7 @@ public class AuthControllerTest extends BaseControllerTest {
                 .username("mockedUsername")
                 .type("Bearer")
                 .token("yourMockedToken")
-                .roles(List.of("USER")).build();
+                .role(RoleType.USER.getLabel()).build();
 
 
         Mockito.when(authService.login(request)).thenReturn(mockResponse);

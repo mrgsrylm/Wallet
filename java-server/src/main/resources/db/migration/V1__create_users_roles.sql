@@ -1,9 +1,3 @@
---ROLE TABLE
-CREATE TABLE roles (
-    id BIGSERIAL PRIMARY KEY,
-    type VARCHAR(20) NOT NULL UNIQUE
-);
-
 --USER TABLE
 CREATE TABLE users (
     id BIGSERIAL PRIMARY KEY,
@@ -11,12 +5,9 @@ CREATE TABLE users (
     last_name VARCHAR(50) NOT NULL,
     username VARCHAR(20) NOT NULL UNIQUE,
     email VARCHAR(50) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL
-);
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(20) NOT NULL
 
-CREATE TABLE users_roles (
-    role_id BIGSERIAL REFERENCES roles(id),
-    user_id BIGSERIAL REFERENCES users(id)
 );
 
 --REFRESH TABLE

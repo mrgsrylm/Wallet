@@ -1,8 +1,6 @@
 package io.github.mrgsrylm.wallet.fixtures;
 
-import io.github.mrgsrylm.wallet.dto.user.RoleResponse;
 import io.github.mrgsrylm.wallet.fixtures.generator.RoleObjectGenerator;
-import io.github.mrgsrylm.wallet.model.RoleModel;
 import io.github.mrgsrylm.wallet.model.enums.RoleType;
 
 import java.util.ArrayList;

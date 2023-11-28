@@ -2,9 +2,7 @@ package io.github.mrgsrylm.wallet.service.impl;
 
 import io.github.mrgsrylm.wallet.base.BaseServiceTest;
 import io.github.mrgsrylm.wallet.fixtures.GenerateRole;
-import io.github.mrgsrylm.wallet.model.RoleModel;
 import io.github.mrgsrylm.wallet.model.enums.RoleType;
-import io.github.mrgsrylm.wallet.repository.RoleRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

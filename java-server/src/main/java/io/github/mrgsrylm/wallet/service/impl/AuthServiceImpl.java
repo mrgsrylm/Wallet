@@ -8,6 +8,7 @@ import io.github.mrgsrylm.wallet.dto.auth.SignUpRequestMapper;
 import io.github.mrgsrylm.wallet.exception.ElementAlreadyExistsException;
 import io.github.mrgsrylm.wallet.exception.NoSuchElementFoundException;
 import io.github.mrgsrylm.wallet.model.UserModel;
+import io.github.mrgsrylm.wallet.model.enums.RoleType;
 import io.github.mrgsrylm.wallet.repository.UserRepository;
 import io.github.mrgsrylm.wallet.security.jwt.JwtUtils;
 import io.github.mrgsrylm.wallet.service.AuthService;
@@ -19,8 +20,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 import static io.github.mrgsrylm.wallet.common.Constants.*;
 
@@ -42,6 +41,7 @@ public class AuthServiceImpl implements AuthService {
             throw new ElementAlreadyExistsException(ALREADY_EXISTS_USER_EMAIL);
 
         final UserModel userModel = signUpRequestMapper.toEntity(request);
+        userModel.setRole(RoleType.USER);
 
         repository.save(userModel);
         log.info(CREATED_USER, userModel.getUsername());
@@ -60,9 +60,6 @@ public class AuthServiceImpl implements AuthService {
         UserModel userModel = repository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new NoSuchElementFoundException(NOT_FOUND_USERNAME));
 
-        List<String> roles = userModel.getRoles().stream()
-                .map(item -> item.getType().getLabel()).toList();
-
         log.info(LOGGED_IN_USER, request.getUsername());
         return JwtResponse.builder()
                 .token(jwt)
@@ -70,7 +67,7 @@ public class AuthServiceImpl implements AuthService {
                 .firstName(userModel.getFirstName())
                 .lastName(userModel.getLastName())
                 .username(userModel.getUsername())
-                .roles(roles)
+                .role(userModel.getRole().getLabel())
                 .build();
     }
 }

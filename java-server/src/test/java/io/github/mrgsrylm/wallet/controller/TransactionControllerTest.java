@@ -11,7 +11,6 @@ import org.springframework.data.domain.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
@@ -19,7 +18,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class TransactionModelControllerTest extends BaseControllerTest {
+class TransactionControllerTest extends BaseControllerTest {
     @MockBean
     private TransactionService transactionService;
 

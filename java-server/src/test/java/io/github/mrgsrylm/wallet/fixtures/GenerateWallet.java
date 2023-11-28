@@ -14,9 +14,9 @@ import java.util.List;
 public class GenerateWallet {
     public static WalletModel build() {
         WalletObjectGenerator generator = new WalletObjectGenerator();
-        generator.generateWallet(GenerateUser.build());
+        generator.generateWallet(GenerateUser.buildUser());
 
-        return generator.generateWallet(GenerateUser.build());
+        return generator.generateWallet(GenerateUser.buildUser());
     }
 
     public static List<WalletModel> buildListWallet() {

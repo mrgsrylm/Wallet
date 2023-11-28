@@ -33,7 +33,6 @@ public class TransactionController {
      * @param id
      * @return TransactionResponse wrapped by ResponseEntity<ApiResponse<T>>
      */
-    @PreAuthorize("hasRole(T(io.github.mrgsrylm.wallet.model.enums.RoleType).user)")
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<TransactionResponse>> findById(@PathVariable long id) {
         final TransactionResponse response = transactionService.findById(id);
@@ -46,7 +45,6 @@ public class TransactionController {
      * @param referenceNumber
      * @return TransactionResponse wrapped by ResponseEntity<ApiResponse<T>>
      */
-    @PreAuthorize("hasRole(T(io.github.mrgsrylm.wallet.model.enums.RoleType).user)")
     @GetMapping("/references/{referenceNumber}")
     public ResponseEntity<ApiResponse<TransactionResponse>> findByReferenceNumber(@PathVariable UUID referenceNumber) {
         final TransactionResponse response = transactionService.findByReferenceNumber(referenceNumber);
@@ -72,7 +70,6 @@ public class TransactionController {
      * @param pageable
      * @return List of TransactionResponse wrapped by ResponseEntity<ApiResponse<T>>
      */
-    @PreAuthorize("hasRole(T(io.github.mrgsrylm.wallet.model.enums.RoleType).user)")
     @GetMapping
     public ResponseEntity<ApiResponse<Page<TransactionResponse>>> findAll(Pageable pageable) {
         final Page<TransactionResponse> response = transactionService.findAll(pageable);

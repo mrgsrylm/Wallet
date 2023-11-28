@@ -25,31 +25,31 @@ export default function App() {
       <Route path="/" element={<PrivateRoute />}>
         <Route path="" element={<DashboardLayout />}>
           <Route path="" element={<Dashboard />}>
-            <Route element={<ProtectedRoute roles={['user', 'ADMIN']} />}>
+            <Route element={<ProtectedRoute roles={['USER', 'ADMIN']} />}>
               <Route index element={<Dashboard />} />
             </Route>
           </Route>
 
           <Route path="wallets" element={<PrivateRoute />}>
-            <Route element={<ProtectedRoute roles={['user', 'ADMIN']} />}>
+            <Route element={<ProtectedRoute roles={['USER', 'ADMIN']} />}>
               <Route index element={<Wallet />} />
             </Route>
-            <Route element={<ProtectedRoute roles={['user', 'ADMIN']} />}>
+            <Route element={<ProtectedRoute roles={['USER', 'ADMIN']} />}>
               <Route path="new" element={<NewWallet />} />
             </Route>
-            <Route element={<ProtectedRoute roles={['user', 'ADMIN']} />}>
+            <Route element={<ProtectedRoute roles={['USER', 'ADMIN']} />}>
               <Route path="addFunds" element={<AddFunds />} />
             </Route>
           </Route>
 
           <Route path="transfers" element={<PrivateRoute />}>
-            <Route element={<ProtectedRoute roles={['user', 'ADMIN']} />}>
+            <Route element={<ProtectedRoute roles={['USER', 'ADMIN']} />}>
               <Route index element={<BasicTabs />} />
             </Route>
           </Route>
 
           <Route path="transactions" element={<PrivateRoute />}>
-            <Route element={<ProtectedRoute roles={['user', 'ADMIN']} />}>
+            <Route element={<ProtectedRoute roles={['USER', 'ADMIN']} />}>
               <Route index element={<Transaction />} />
             </Route>
           </Route>

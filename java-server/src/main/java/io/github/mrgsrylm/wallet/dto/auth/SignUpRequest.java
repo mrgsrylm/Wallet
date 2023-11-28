@@ -36,6 +36,4 @@ public class SignUpRequest {
     @Size(min = 6, max = 100, message = "{password.size}")
     @NotBlank(message = "password.notblank}")
     private String password;
-
-    private Set<String> roles;
 }

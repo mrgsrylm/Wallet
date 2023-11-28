@@ -19,7 +19,7 @@ public class UserServiceImplTest extends BaseServiceTest {
 
     @Test
     void givenId_whenGetReferenceById_ReturnSuccessUser() {
-        UserModel mockUserModel = GenerateUser.build();
+        UserModel mockUserModel = GenerateUser.buildUser();
 
         Mockito.when(userRepository.getReferenceById(Mockito.anyLong())).thenReturn(mockUserModel);
 

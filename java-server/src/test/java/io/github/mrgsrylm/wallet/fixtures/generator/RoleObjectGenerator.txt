@@ -2,7 +2,6 @@ package io.github.mrgsrylm.wallet.fixtures.generator;
 
 import com.github.javafaker.Faker;
 import io.github.mrgsrylm.wallet.fixtures.RandomUtil;
-import io.github.mrgsrylm.wallet.model.RoleModel;
 import io.github.mrgsrylm.wallet.model.UserModel;
 import io.github.mrgsrylm.wallet.model.enums.RoleType;
 

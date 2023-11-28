@@ -1,5 +1,6 @@
 package io.github.mrgsrylm.wallet.model;
 
+import io.github.mrgsrylm.wallet.model.enums.RoleType;
 import io.github.mrgsrylm.wallet.model.enums.TokenClaims;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -37,25 +38,12 @@ public class UserModel {
     @Column(length = 100, nullable = false)
     private String password;
 
-    @ManyToMany(cascade = CascadeType.MERGE)
-    @JoinTable(name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id", nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Set<RoleModel> roles = new HashSet<>();
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20, nullable = false, unique = true)
+    private RoleType role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<WalletModel> wallets = new HashSet<>();
-
-    public void addRole(RoleModel roleModel) {
-        roles.add(roleModel);
-        roleModel.getUsers().add(this);
-    }
-
-    public void removeRole(RoleModel roleModel) {
-        roles.remove(roleModel);
-        roleModel.getUsers().remove(this);
-    }
 
     public void addWallet(WalletModel walletModel) {
         wallets.add(walletModel);
@@ -71,7 +59,7 @@ public class UserModel {
         final Map<String, Object> claims = new HashMap<>();
         claims.put(TokenClaims.ID.getValue(), this.id);
         claims.put(TokenClaims.USERNAME.getValue(), this.username);
-        claims.put(TokenClaims.ROLES.getValue(), this.roles);
+        claims.put(TokenClaims.ROLES.getValue(), this.role);
         return claims;
     }
 }

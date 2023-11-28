@@ -11,7 +11,6 @@ import io.github.mrgsrylm.wallet.fixtures.GenerateUser;
 import io.github.mrgsrylm.wallet.model.UserModel;
 import io.github.mrgsrylm.wallet.repository.UserRepository;
 import io.github.mrgsrylm.wallet.security.jwt.JwtUtils;
-import io.github.mrgsrylm.wallet.service.RoleService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -33,8 +32,6 @@ class AuthServiceImplTest extends BaseServiceTest {
     @Mock
     private PasswordEncoder passwordEncoder;
     @Mock
-    private RoleService roleService;
-    @Mock
     private SignUpRequestMapper signUpRequestMapper;
     @Mock
     private AuthenticationManager authenticationManager;
@@ -44,7 +41,7 @@ class AuthServiceImplTest extends BaseServiceTest {
     @Test
     void givenSignUpRequest_WhenSignUp_ReturnSuccess() {
         SignUpRequest request = GenerateUser.buildSignUpRequest();
-        UserModel mockUserModel = GenerateUser.build();
+        UserModel mockUserModel = GenerateUser.buildUser();
 
         Mockito.when(userRepository.existsByUsernameIgnoreCase(Mockito.anyString())).thenReturn(false);
         Mockito.when(userRepository.existsByEmailIgnoreCase(Mockito.anyString())).thenReturn(false);
@@ -86,7 +83,7 @@ class AuthServiceImplTest extends BaseServiceTest {
 
     @Test
     void givenLoginRequest_WhenLogin_ReturnSuccess() {
-        UserModel mockUserModel = GenerateUser.build();
+        UserModel mockUserModel = GenerateUser.buildUser();
         LoginRequest mockRequest  = LoginRequest.builder()
                 .username(mockUserModel.getUsername()).password(mockUserModel.getPassword()).build();
 
@@ -103,7 +100,7 @@ class AuthServiceImplTest extends BaseServiceTest {
         Assertions.assertEquals(mockRequest.getUsername(), result.getUsername());
         Assertions.assertEquals(mockUserModel.getFirstName(), result.getFirstName());
         Assertions.assertEquals(mockUserModel.getLastName(), result.getLastName());
-        Assertions.assertEquals(mockUserModel.getRoles().stream().map(item -> item.getType().getLabel()).toList(), result.getRoles());
+        Assertions.assertEquals(mockUserModel.getRole().getLabel(), result.getRole());
         Assertions.assertEquals("mockedToken", result.getToken());
     }
 
