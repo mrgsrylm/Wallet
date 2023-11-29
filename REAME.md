@@ -8,8 +8,8 @@ Wallet is e-wallet web application. Other related applications: [Wallet](https:/
 - Postgres
 - ReactJS
 
-## Poy Wallet Backend
+## Wallet Backend
 
-## Poy Wallet Frontend
+## Wallet Frontend
 
 ## License
