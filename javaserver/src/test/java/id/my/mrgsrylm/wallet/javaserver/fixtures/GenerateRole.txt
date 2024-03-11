@@ -1,0 +1,56 @@
+package id.my.mrgsrylm.wallet.javaserver.fixtures;
+
+import id.my.mrgsrylm.wallet.javaserver.fixtures.generator.RoleObjectGenerator;
+import id.my.mrgsrylm.wallet.javaserver.model.enums.RoleType;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+public class GenerateRole {
+    public static RoleModel build() {
+        RoleObjectGenerator genRole = new RoleObjectGenerator();
+
+        return genRole.generateRole();
+    }
+
+    public static Set<RoleModel> buildAsSet() {
+        Set<RoleModel> roleModelSet = new HashSet<>();
+        roleModelSet.add(build());
+        return roleModelSet;
+    }
+
+    public static List<RoleModel> buildAsList() {
+        List<RoleModel> roleModelList = new ArrayList<>();
+        roleModelList.add(build());
+        return roleModelList;
+    }
+
+    public static Set<RoleType> buildAsSetRoleType() {
+        Set<RoleType> types = new HashSet<>();
+        types.add(build().getType());
+
+        return types;
+    }
+
+    public static Set<String> buildAsSetStringType() {
+        String value = build().getType().getLabel();
+        Set<String> roleName = new HashSet<>();
+        roleName.add(value);
+        return roleName;
+    }
+
+    public static RoleResponse buildRoleResponse() {
+        RoleModel roleModel = build();
+        return RoleResponse.builder()
+                .id(roleModel.getId())
+                .type(roleModel.getType()).build();
+    }
+
+    public static Set<RoleResponse> buildRoleResponseAsSet() {
+        Set<RoleResponse> roles = new HashSet<>();
+        roles.add(buildRoleResponse());
+        return roles;
+    }
+}

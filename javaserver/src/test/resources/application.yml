@@ -1,0 +1,29 @@
+spring:
+  config:
+    import: optional:file:.env[.properties]
+  sql:
+    init:
+      mode: always
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    open-in-view: false
+    properties:
+      hibernate.format_sql: true
+      open-in-view: false
+      generate-ddl: true
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: root
+    password: my-secret-pw
+    url: jdbc:postgresql://localhost:5432/dbtest
+    maximum-pool-size: 5
+    connection-timeout: 180000
+    maximum-lifetime: 170000
+
+app:
+  security:
+    jwtSecret: S3cr3TkEyK3yS3cretS3cr3TkEyK3yS3cretS3cr3TkEyK3yS3cretS3cr3TkEyK3yS3cretS3cr3TkEyK3yS3cretS3cr3TkEyK3yS3cretS3cr3TkEyK3yS3cretS3cr3TkEyK3yS3cretS3cr3TkEyK3yS3cret
+    # 1 hour
+    jwtExpirationMs: 3600000

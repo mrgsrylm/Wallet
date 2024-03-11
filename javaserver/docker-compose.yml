@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  app:
+    container_name: wallet-javaserver
+    build:
+      dockerfile: ./Dockerfile
+      context: .
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      - wallet_data:/var/www/html/
+    depends_on:
+      - postgres
+
+  postgres:
+    container_name: wallet-postgres
+    image: postgres:15.3
+    restart: always
+    environment:
+      POSTGRES_DB: wallet
+      POSTGRES_USER: wallet
+      POSTGRES_PASSWORD: mysecretpw
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  wallet_data:
+  postgres_data:

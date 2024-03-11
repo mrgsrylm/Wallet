@@ -1,0 +1,45 @@
+package id.my.mrgsrylm.wallet.javaserver.fixtures.generator;
+
+import com.github.javafaker.Faker;
+import id.my.mrgsrylm.wallet.javaserver.fixtures.RandomUtil;
+import id.my.mrgsrylm.wallet.javaserver.model.UserModel;
+import id.my.mrgsrylm.wallet.javaserver.model.enums.RoleType;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class RoleObjectGenerator {
+
+    private final Faker faker;
+
+    public RoleObjectGenerator() {
+        this.faker = new Faker();
+    }
+
+    public RoleModel generateRole() {
+        RoleModel roleModel = new RoleModel();
+        roleModel.setId(RandomUtil.generateRandomLong(1, 100));
+        roleModel.setType(generateRoleType());
+//        role.setUsers(generateUsers(role));
+        return roleModel;
+    }
+
+    private RoleType generateRoleType() {
+        return faker.options().option(RoleType.class);
+    }
+
+    private Set<UserModel> generateUsers(RoleModel roleModel) {
+        Set<RoleModel> roleModelSet = new HashSet<>();
+        roleModelSet.add(roleModel);
+
+        // You can customize the logic for generating users based on your requirements
+        UserObjectGenerator userObjectGenerator = new UserObjectGenerator();
+        Set<UserModel> userModels = new HashSet<>();
+        for (int i = 0; i < faker.number().numberBetween(1, 5); i++) {
+            UserModel userModel = userObjectGenerator.generateUser(roleModelSet);
+            userModel.getRoles().add(roleModel);
+            userModels.add(userModel);
+        }
+        return userModels;
+    }
+}
